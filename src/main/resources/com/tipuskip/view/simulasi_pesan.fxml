@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.tipuskip.controller.SimulasiPesanController"
+            stylesheets="@../css/style.css">
+
+    <!-- Left: Scenario List & Info -->
+    <left>
+        <VBox spacing="16" prefWidth="300" styleClass="card">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label text="Pilih Skenario Pesan" styleClass="card-title" />
+            <ComboBox fx:id="cbSkenario" promptText="Pilih Skenario..." maxWidth="Infinity" />
+
+            <VBox fx:id="infoCard" spacing="8" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;">
+                <Label fx:id="lblKategori" text="Kategori: -" style="-fx-font-weight: bold; -fx-text-fill: #2563eb;" />
+                <Label fx:id="lblKesulitan" text="Tingkat: -" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
+                <Label fx:id="lblDeskripsi" text="Pilih skenario untuk memulai simulasi pesan interaktif." wrapText="true" style="-fx-text-fill: #475569;" />
+            </VBox>
+
+            <Button fx:id="btnMulaiSimulasi" text="▶ Mulai Simulasi" onAction="#handleMulaiSimulasi" maxWidth="Infinity" styleClass="btn-primary" />
+            <Button fx:id="btnReset" text="🔄 Reset / Ulangi" onAction="#handleReset" maxWidth="Infinity" styleClass="btn-secondary" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Score Live Box -->
+            <VBox spacing="4" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 8px;">
+                <Label text="Skor Saat Ini" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
+                <Label fx:id="lblSkorLive" text="0 / 100" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Center: Interactive Chat Container -->
+    <center>
+        <VBox spacing="16" style="-fx-padding: 0 0 0 20;">
+            <!-- Scrollable Chat Bubble Area -->
+            <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background-color: transparent; -fx-background: #ffffff; -fx-border-color: #e2e8f0; -fx-border-radius: 12px; -fx-background-radius: 12px;">
+                <VBox fx:id="chatBox" spacing="12" style="-fx-padding: 20px;">
+                    <!-- Chat bubbles injected here dynamically -->
+                </VBox>
+            </ScrollPane>
+
+            <!-- Feedback Banner (shows consequence/feedback after choosing response) -->
+            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
+                  style="-fx-background-color: #fef3c7; -fx-border-color: #fde68a; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 12px;">
+                <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-text-fill: #92400e;" />
+                <Label fx:id="lblFeedbackDetail" text="Penjelasan..." wrapText="true" style="-fx-text-fill: #78350f;" />
+            </VBox>
+
+            <!-- Bottom: User Response Choices -->
+            <VBox fx:id="responsesContainer" spacing="8" styleClass="card">
+                <Label text="Tentukan Respons Anda:" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                <VBox fx:id="choiceButtonsBox" spacing="8">
+                    <!-- Choice buttons generated dynamically -->
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

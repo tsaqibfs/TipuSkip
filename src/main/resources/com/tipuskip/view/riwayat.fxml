@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tipuskip.controller.RiwayatController"
+      spacing="16" stylesheets="@../css/style.css">
+
+    <Label text="📜 Riwayat Aktivitas &amp; Materi Edukasi" styleClass="card-title" />
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <!-- Tab 1: Riwayat Simulasi -->
+        <Tab text="Riwayat Simulasi">
+            <VBox spacing="12" style="-fx-padding: 16px;">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="Daftar Hasil Latihan Simulasi Anda:" style="-fx-font-weight: bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="🔄 Refresh" onAction="#muatRiwayatSimulasi" styleClass="btn-secondary" />
+                </HBox>
+
+                <TableView fx:id="tableRiwayatSimulasi" prefHeight="400">
+                    <columns>
+                        <TableColumn fx:id="colSimId" text="ID" prefWidth="50" />
+                        <TableColumn fx:id="colSimJudul" text="Judul Skenario" prefWidth="300" />
+                        <TableColumn fx:id="colSimSkor" text="Skor" prefWidth="80" />
+                        <TableColumn fx:id="colSimStatus" text="Evaluasi" prefWidth="150" />
+                        <TableColumn fx:id="colSimDurasi" text="Durasi (detik)" prefWidth="100" />
+                        <TableColumn fx:id="colSimWaktu" text="Waktu Selesai" prefWidth="180" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Tab 2: Riwayat Analisis Screenshot -->
+        <Tab text="Riwayat Analisis Screenshot">
+            <VBox spacing="12" style="-fx-padding: 16px;">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="Daftar Analisis Tangkapan Layar:" style="-fx-font-weight: bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="🔄 Refresh" onAction="#muatRiwayatAnalisis" styleClass="btn-secondary" />
+                </HBox>
+
+                <TableView fx:id="tableRiwayatAnalisis" prefHeight="400">
+                    <columns>
+                        <TableColumn fx:id="colAnaId" text="ID" prefWidth="50" />
+                        <TableColumn fx:id="colAnaNamaFile" text="Nama Gambar" prefWidth="220" />
+                        <TableColumn fx:id="colAnaRisiko" text="Tingkat Risiko" prefWidth="130" />
+                        <TableColumn fx:id="colAnaSkor" text="Skor Indikator" prefWidth="100" />
+                        <TableColumn fx:id="colAnaAlasan" text="Alasan Ringkas" prefWidth="250" />
+                        <TableColumn fx:id="colAnaWaktu" text="Waktu Analisis" prefWidth="160" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Tab 3: Modus & Tips Pencegahan (PRD FR-11) -->
+        <Tab text="Materi Edukasi Pencegahan">
+            <ScrollPane fitToWidth="true" style="-fx-padding: 16px;">
+                <VBox spacing="16">
+                    <VBox styleClass="card" spacing="8">
+                        <Label text="1. Modus Phishing &amp; Permintaan OTP" styleClass="card-title" />
+                        <Label text="Penipu berpura-pura menjadi customer service bank, dompet digital, atau marketplace. Mereka meminta Anda menyebutkan atau memasukkan kode OTP ke formulir palsu." wrapText="true" />
+                        <Label text="💡 Pencegahan: Ingat bahwa kode OTP adalah kunci rahasia. Petugas resmi tidak akan pernah meminta kode OTP atau PIN." style="-fx-font-weight: bold; -fx-text-fill: #15803d;" wrapText="true" />
+                    </VBox>
+
+                    <VBox styleClass="card" spacing="8">
+                        <Label text="2. Modus Surat Undangan / Paket APK Berbahaya" styleClass="card-title" />
+                        <Label text="Penipu mengirim berkas via WhatsApp dengan dalih surat undangan pernikahan, resi pengiriman kurir, tagihan PLN, atau surat tilang berbentuk .apk." wrapText="true" />
+                        <Label text="💡 Pencegahan: Jangan pernah menginstal berkas berakhiran .APK di luar Google Play Store. Berkas ini dapat membajak SMS verifikasi bank Anda." style="-fx-font-weight: bold; -fx-text-fill: #15803d;" wrapText="true" />
+                    </VBox>
+
+                    <VBox styleClass="card" spacing="8">
+                        <Label text="3. Modus Lowongan Kerja Freelance Like &amp; Subscribe" styleClass="card-title" />
+                        <Label text="Korban ditawari imbalan kecil di awal dengan tugas mudah seperti menonton video. Selanjutnya korban diminta mentransfer deposit uang bernilai jutaan rupiah yang tidak bisa ditarik kembali." wrapText="true" />
+                        <Label text="💡 Pencegahan: Pekerjaan resmi membayar pekerjanya, bukan meminta pekerja mentransfer uang deposit atau modal terlebih dahulu." style="-fx-font-weight: bold; -fx-text-fill: #15803d;" wrapText="true" />
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
+</VBox>

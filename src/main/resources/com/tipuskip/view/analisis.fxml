@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.tipuskip.controller.AnalisisController"
+            stylesheets="@../css/style.css">
+
+    <VBox spacing="20" style="-fx-padding: 10px;">
+
+        <!-- Header Card: Upload Area -->
+        <VBox spacing="12" styleClass="card">
+            <Label text="🔍 Analisis Tangkapan Layar Percakapan" styleClass="card-title" />
+            <Label text="Unggah tangkapan layar (screenshot) pesan WhatsApp, SMS, atau Telegram untuk dideteksi pola indikator penipuannya secara otomatis."
+                   styleClass="card-subtitle" wrapText="true" />
+
+            <HBox spacing="16" alignment="CENTER_LEFT">
+                <Button fx:id="btnPilihGambar" text="📁 Pilih Berkas Gambar..." onAction="#handlePilihGambar" styleClass="btn-secondary" />
+                <Label fx:id="lblNamaFile" text="Belum ada gambar dipilih" style="-fx-text-fill: #64748b; -fx-font-style: italic;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnMulaiAnalisis" text="🚀 Mulai Analisis OCR" onAction="#handleMulaiAnalisis" disable="true" styleClass="btn-primary" />
+            </HBox>
+
+            <!-- Preview Image & Progress Bar -->
+            <HBox spacing="16" alignment="CENTER_LEFT">
+                <ImageView fx:id="imgPreview" fitWidth="120" fitHeight="120" preserveRatio="true" />
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblStatusProses" text="Siap menganalisis..." style="-fx-font-size: 13px; -fx-text-fill: #475569;" />
+                    <ProgressBar fx:id="progressBar" progress="0.0" visible="false" maxWidth="Infinity" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Result Section (visible after analysis) -->
+        <VBox fx:id="resultSection" visible="false" managed="false" spacing="16">
+
+            <!-- Risk Summary Card -->
+            <VBox spacing="12" styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="Hasil Penilaian Risiko:" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                    <Label fx:id="lblBadgeRisiko" text="RISIKO SEDANG" styleClass="badge-sedang" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblSkorRisiko" text="Skor Indikator: 45" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                </HBox>
+
+                <!-- Educational Disclaimer Box -->
+                <VBox styleClass="disclaimer-box" spacing="4">
+                    <Label text="⚠️ Batasan &amp; Pernyataan Edukasi" style="-fx-font-weight: bold; -fx-text-fill: #92400e;" />
+                    <Label fx:id="lblDisclaimer"
+                           text="Hasil analisis bersifat deteksi awal untuk pembelajaran dan tidak menetapkan secara pasti bahwa suatu pesan atau pengirim adalah penipu. Selalu verifikasi langsung ke pihak resmi."
+                           wrapText="true" />
+                </VBox>
+            </VBox>
+
+            <!-- Two-column: OCR Extracted Text & Matched Indicators -->
+            <HBox spacing="16">
+                <!-- Left: Extracted Text -->
+                <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="📄 Teks Hasil Ekstraksi OCR" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                    <TextArea fx:id="txtOcrExtracted" editable="false" wrapText="true" prefHeight="200"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;" />
+                </VBox>
+
+                <!-- Right: Matched Indicators Table -->
+                <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                    <Label text="🎯 Indikator Penipuan yang Ditemukan" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                    <TableView fx:id="tableIndikatorCocok" prefHeight="200">
+                        <columns>
+                            <TableColumn fx:id="colIndikatorNama" text="Nama Indikator" prefWidth="180" />
+                            <TableColumn fx:id="colIndikatorTeks" text="Potongan Teks" prefWidth="140" />
+                            <TableColumn fx:id="colIndikatorBobot" text="Bobot" prefWidth="70" />
+                        </columns>
+                    </TableView>
+                </VBox>
+            </HBox>
+
+            <!-- Bottom: Reasoning & Advice Cards -->
+            <VBox spacing="12" styleClass="card">
+                <Label text="📋 Alasan Penilaian" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                <Label fx:id="lblAlasanPenilaian" text="-" wrapText="true" style="-fx-text-fill: #334155;" />
+
+                <Separator />
+
+                <Label text="💡 Rekomendasi Langkah Verifikasi Aman" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                <Label fx:id="lblSaranVerifikasi" text="-" wrapText="true" style="-fx-text-fill: #047857;" />
+            </VBox>
+
+        </VBox>
+
+    </VBox>
+</ScrollPane>

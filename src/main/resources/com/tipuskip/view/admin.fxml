@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tipuskip.controller.AdminController"
+      spacing="16" stylesheets="@../css/style.css">
+
+    <Label text="⚙️ Admin Panel - Pengelolaan Skenario &amp; Indikator" styleClass="card-title" />
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+        <!-- Tab 1: Kelola Skenario -->
+        <Tab text="Kelola Skenario">
+            <VBox spacing="12" style="-fx-padding: 16px;">
+                <HBox spacing="16">
+                    <!-- Left: Table of Scenarios -->
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Daftar Skenario Simulasi:" style="-fx-font-weight: bold;" />
+                        <TableView fx:id="tableSkenario" prefHeight="300">
+                            <columns>
+                                <TableColumn fx:id="colSkId" text="ID" prefWidth="40" />
+                                <TableColumn fx:id="colSkJudul" text="Judul" prefWidth="200" />
+                                <TableColumn fx:id="colSkJenis" text="Jenis" prefWidth="90" />
+                                <TableColumn fx:id="colSkKategori" text="Kategori" prefWidth="130" />
+                                <TableColumn fx:id="colSkTingkat" text="Kesulitan" prefWidth="90" />
+                                <TableColumn fx:id="colSkStatus" text="Aktif" prefWidth="60" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="8">
+                            <Button text="🗑 Hapus Skenario" onAction="#handleHapusSkenario" styleClass="btn-danger" />
+                            <Button text="🔄 Refresh" onAction="#muatDataSkenario" styleClass="btn-secondary" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Right: Form Tambah Skenario Baru -->
+                    <VBox spacing="10" prefWidth="350" styleClass="card">
+                        <Label text="Tambah Skenario Baru" styleClass="card-title" />
+                        <TextField fx:id="txtSkJudul" promptText="Judul Skenario" />
+                        <TextArea fx:id="txtSkDeskripsi" promptText="Deskripsi Skenario" prefHeight="60" wrapText="true" />
+                        <ComboBox fx:id="cbSkJenis" promptText="Jenis (PESAN / TELEPON)" maxWidth="Infinity" />
+                        <TextField fx:id="txtSkKategori" promptText="Kategori (e.g. Lowongan Kerja)" />
+                        <ComboBox fx:id="cbSkTingkat" promptText="Tingkat Kesulitan" maxWidth="Infinity" />
+                        <Button text="💾 Simpan Skenario" onAction="#handleTambahSkenario" maxWidth="Infinity" styleClass="btn-primary" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- Tab 2: Kelola Indikator Penipuan -->
+        <Tab text="Kelola Indikator Penipuan">
+            <VBox spacing="12" style="-fx-padding: 16px;">
+                <HBox spacing="16">
+                    <!-- Left: Table of Indicators -->
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Daftar Indikator Pola &amp; Regex:" style="-fx-font-weight: bold;" />
+                        <TableView fx:id="tableIndikator" prefHeight="300">
+                            <columns>
+                                <TableColumn fx:id="colIndId" text="ID" prefWidth="40" />
+                                <TableColumn fx:id="colIndNama" text="Nama Indikator" prefWidth="180" />
+                                <TableColumn fx:id="colIndPola" text="Pola / Regex" prefWidth="180" />
+                                <TableColumn fx:id="colIndTipe" text="Tipe" prefWidth="80" />
+                                <TableColumn fx:id="colIndBobot" text="Bobot" prefWidth="60" />
+                                <TableColumn fx:id="colIndStatus" text="Aktif" prefWidth="60" />
+                            </columns>
+                        </TableView>
+                        <HBox spacing="8">
+                            <Button text="🗑 Hapus Indikator" onAction="#handleHapusIndikator" styleClass="btn-danger" />
+                            <Button text="🔄 Refresh" onAction="#muatDataIndikator" styleClass="btn-secondary" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Right: Form Tambah Indikator Baru -->
+                    <VBox spacing="10" prefWidth="350" styleClass="card">
+                        <Label text="Tambah Indikator Baru" styleClass="card-title" />
+                        <TextField fx:id="txtIndNama" promptText="Nama Indikator" />
+                        <TextField fx:id="txtIndPola" promptText="Pola Regex / Kata Kunci" />
+                        <ComboBox fx:id="cbIndTipe" promptText="Tipe (KEYWORD / REGEX)" maxWidth="Infinity" />
+                        <Spinner fx:id="spnIndBobot" editable="true" maxWidth="Infinity" />
+                        <TextArea fx:id="txtIndDeskripsi" promptText="Deskripsi Analisis" prefHeight="50" wrapText="true" />
+                        <TextArea fx:id="txtIndSaran" promptText="Saran Verifikasi Aman" prefHeight="50" wrapText="true" />
+                        <Button text="💾 Simpan Indikator" onAction="#handleTambahIndikator" maxWidth="Infinity" styleClass="btn-primary" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>

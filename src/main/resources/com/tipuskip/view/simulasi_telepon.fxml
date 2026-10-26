@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.tipuskip.controller.SimulasiTeleponController"
+            stylesheets="@../css/style.css">
+
+    <!-- Left: Scenario selector -->
+    <left>
+        <VBox spacing="16" prefWidth="300" styleClass="card">
+            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+            <Label text="Pilih Skenario Telepon" styleClass="card-title" />
+            <ComboBox fx:id="cbSkenario" promptText="Pilih Skenario Telepon..." maxWidth="Infinity" />
+
+            <VBox spacing="8" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;">
+                <Label fx:id="lblKategori" text="Kategori: -" style="-fx-font-weight: bold; -fx-text-fill: #2563eb;" />
+                <Label fx:id="lblKesulitan" text="Tingkat: -" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
+                <Label fx:id="lblDeskripsi" text="Simulasi panggilan telepon palsu (social engineering)." wrapText="true" style="-fx-text-fill: #475569;" />
+            </VBox>
+
+            <Button fx:id="btnMulaiPanggilan" text="📞 Mulai Panggilan" onAction="#handleMulaiPanggilan" maxWidth="Infinity" styleClass="btn-primary" />
+            <Button fx:id="btnTutupPanggilan" text="🛑 Tutup / Akhiri" onAction="#handleTutupPanggilan" maxWidth="Infinity" styleClass="btn-danger" />
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <VBox spacing="4" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 8px;">
+                <Label text="Skor Kewaspadaan" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
+                <Label fx:id="lblSkorLive" text="0 / 100" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Center: Phone UI -->
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 0 0 0 24;">
+            <!-- Call Visual Card -->
+            <VBox alignment="CENTER" spacing="12" styleClass="phone-screen" prefHeight="320">
+                <StackPane styleClass="phone-avatar">
+                    <Label text="👤" style="-fx-font-size: 40px;" />
+                </StackPane>
+                <Label fx:id="lblCallerName" text="+62-812-XXXX-XXXX (Panggilan Masuk)" styleClass="phone-caller-name" />
+                <Label fx:id="lblCallStatus" text="Status: Menunggu Skenario..." styleClass="phone-status" />
+
+                <!-- Speech Dialogue Box -->
+                <VBox alignment="CENTER" maxWidth="550" style="-fx-background-color: rgba(255,255,255,0.12); -fx-padding: 16px; -fx-background-radius: 12px;">
+                    <Label fx:id="lblDialogue" text="&quot;Tekan tombol 'Mulai Panggilan' untuk menerima simulasi.&quot;"
+                           wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #ffffff; -fx-font-size: 15px; -fx-font-style: italic;" />
+                </VBox>
+            </VBox>
+
+            <!-- Feedback Info -->
+            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
+                  style="-fx-background-color: #fef3c7; -fx-border-color: #fde68a; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 12px;">
+                <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-text-fill: #92400e;" />
+                <Label fx:id="lblFeedbackDetail" text="Penjelasan..." wrapText="true" style="-fx-text-fill: #78350f;" />
+            </VBox>
+
+            <!-- Response Options -->
+            <VBox fx:id="choiceContainer" spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Pilih Cara Anda Menjawab Telepon:" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                <VBox fx:id="choiceButtonsBox" spacing="8">
+                    <!-- Button responses dynamically injected -->
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
