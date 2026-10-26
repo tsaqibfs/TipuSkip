@@ -1,68 +1,77 @@
 /* TipuSkip Modern JavaFX Stylesheet */
+/* Bagian Tanggung Jawab Anggota 1 (UI/UX) */
 
 .root {
     -fx-font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    -fx-background-color: #f8fafc;
+    -fx-background-color: #f1f5f9;
     -fx-font-size: 14px;
 }
 
-/* Header & Navigation Bar */
+/* =========================================================================
+   Header & Navigation Bar
+   ========================================================================= */
 .navbar {
-    -fx-background-color: #1e293b;
-    -fx-padding: 12px 24px;
-    -fx-spacing: 16px;
+    -fx-background-color: #0f172a;
+    -fx-padding: 14px 24px;
+    -fx-spacing: 12px;
     -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #1e293b;
+    -fx-border-width: 0 0 1px 0;
 }
 
 .brand-title {
     -fx-text-fill: #38bdf8;
-    -fx-font-size: 20px;
+    -fx-font-size: 21px;
     -fx-font-weight: bold;
 }
 
 .nav-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #cbd5e1;
-    -fx-font-size: 14px;
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
     -fx-font-weight: 600;
     -fx-padding: 8px 16px;
     -fx-cursor: hand;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 .nav-button:hover {
-    -fx-background-color: #334155;
-    -fx-text-fill: #ffffff;
+    -fx-background-color: #1e293b;
+    -fx-text-fill: #f8fafc;
 }
 
 .nav-button-active {
     -fx-background-color: #2563eb;
     -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(37, 99, 235, 0.4), 8, 0, 0, 2);
 }
 
-/* Card Containers */
+/* =========================================================================
+   Card Containers & General Typography
+   ========================================================================= */
 .card {
     -fx-background-color: #ffffff;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
     -fx-border-color: #e2e8f0;
     -fx-border-width: 1px;
-    -fx-padding: 24px;
+    -fx-padding: 20px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.04), 10, 0, 0, 4);
 }
 
 .card-title {
-    -fx-font-size: 18px;
+    -fx-font-size: 17px;
     -fx-font-weight: bold;
     -fx-text-fill: #0f172a;
 }
 
 .card-subtitle {
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-text-fill: #64748b;
 }
 
-/* Primary, Secondary, Danger Buttons */
+/* Buttons */
 .btn-primary {
     -fx-background-color: #2563eb;
     -fx-text-fill: #ffffff;
@@ -77,8 +86,10 @@
 }
 
 .btn-secondary {
-    -fx-background-color: #e2e8f0;
+    -fx-background-color: #f1f5f9;
     -fx-text-fill: #334155;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
     -fx-font-weight: bold;
     -fx-padding: 10px 20px;
     -fx-background-radius: 8px;
@@ -86,7 +97,7 @@
 }
 
 .btn-secondary:hover {
-    -fx-background-color: #cbd5e1;
+    -fx-background-color: #e2e8f0;
 }
 
 .btn-danger {
@@ -102,81 +113,263 @@
     -fx-background-color: #dc2626;
 }
 
-/* Chat Simulation UI */
-.chat-container {
-    -fx-background-color: #f1f5f9;
+.btn-success {
+    -fx-background-color: #10b981;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.btn-success:hover {
+    -fx-background-color: #059669;
+}
+
+/* =========================================================================
+   Chat Simulation UI (WhatsApp / Telegram Modern Theme)
+   ========================================================================= */
+.chat-window {
+    -fx-background-color: #efeae2; /* Authentic WhatsApp wallpaper tint */
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 12px;
     -fx-background-radius: 12px;
-    -fx-padding: 16px;
-    -fx-spacing: 12px;
+}
+
+.chat-header {
+    -fx-background-color: #075e54; /* WhatsApp classic dark green */
+    -fx-padding: 12px 18px;
+    -fx-background-radius: 12px 12px 0 0;
+    -fx-border-radius: 12px 12px 0 0;
+}
+
+.chat-header-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.chat-header-status {
+    -fx-text-fill: #c5e1a5;
+    -fx-font-size: 12px;
+}
+
+.chat-avatar-circle {
+    -fx-background-color: #25d366;
+    -fx-background-radius: 40px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+    -fx-alignment: CENTER;
 }
 
 .bubble-incoming {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 14px 14px 14px 2px;
-    -fx-padding: 12px 16px;
+    -fx-background-radius: 12px 12px 12px 2px;
+    -fx-padding: 10px 14px;
     -fx-border-color: #e2e8f0;
-    -fx-border-radius: 14px 14px 14px 2px;
-    -fx-max-width: 500px;
+    -fx-border-radius: 12px 12px 12px 2px;
+    -fx-max-width: 520px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 4, 0, 0, 1);
 }
 
 .bubble-outgoing {
-    -fx-background-color: #2563eb;
-    -fx-text-fill: #ffffff;
-    -fx-background-radius: 14px 14px 2px 14px;
-    -fx-padding: 12px 16px;
-    -fx-max-width: 500px;
+    -fx-background-color: #d9fdd3; /* WhatsApp user chat bubble */
+    -fx-background-radius: 12px 12px 2px 12px;
+    -fx-padding: 10px 14px;
+    -fx-border-color: #bbf7d0;
+    -fx-border-radius: 12px 12px 2px 12px;
+    -fx-max-width: 520px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.05), 4, 0, 0, 1);
 }
 
 .bubble-sender {
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #64748b;
+    -fx-text-fill: #0284c7;
 }
 
-.response-card {
+.bubble-time {
+    -fx-font-size: 10px;
+    -fx-text-fill: #94a3b8;
+}
+
+.attachment-preview-box {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #fca5a5;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+}
+
+.choice-btn {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 8px;
     -fx-border-color: #cbd5e1;
     -fx-border-radius: 8px;
-    -fx-padding: 12px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px 16px;
     -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
 }
 
-.response-card:hover {
+.choice-btn:hover {
     -fx-border-color: #2563eb;
     -fx-background-color: #eff6ff;
 }
 
-/* Phone Simulation UI */
-.phone-screen {
+/* =========================================================================
+   Phone Simulation UI (SmartPhone Dialer & Caller ID)
+   ========================================================================= */
+.phone-container {
     -fx-background-color: #0f172a;
-    -fx-background-radius: 24px;
-    -fx-padding: 32px;
+    -fx-border-color: #334155;
+    -fx-border-width: 8px;
+    -fx-border-radius: 28px;
+    -fx-background-radius: 28px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.35), 20, 0, 0, 8);
+}
+
+.phone-status-bar {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.phone-screen {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 20px;
+    -fx-padding: 20px;
     -fx-alignment: CENTER;
 }
 
 .phone-avatar {
     -fx-background-color: #334155;
-    -fx-background-radius: 60px;
-    -fx-min-width: 100px;
-    -fx-min-height: 100px;
-    -fx-max-width: 100px;
-    -fx-max-height: 100px;
+    -fx-border-color: #475569;
+    -fx-border-width: 3px;
+    -fx-background-radius: 70px;
+    -fx-border-radius: 70px;
+    -fx-min-width: 90px;
+    -fx-min-height: 90px;
+    -fx-max-width: 90px;
+    -fx-max-height: 90px;
     -fx-alignment: CENTER;
 }
 
+.phone-avatar-ringing {
+    -fx-border-color: #f59e0b;
+    -fx-border-width: 4px;
+}
+
 .phone-caller-name {
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: #f8fafc;
 }
 
-.phone-status {
+.phone-caller-number {
     -fx-font-size: 13px;
     -fx-text-fill: #94a3b8;
 }
 
-/* Risk Badges */
+.phone-spam-badge {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #dc2626;
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 12px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.phone-status {
+    -fx-font-size: 13px;
+    -fx-text-fill: #38bdf8;
+    -fx-font-weight: bold;
+}
+
+.phone-timer {
+    -fx-font-size: 14px;
+    -fx-text-fill: #a5f3fc;
+    -fx-font-family: 'Consolas', 'Courier New', monospace;
+    -fx-font-weight: bold;
+}
+
+/* Dialer Keypad */
+.dialer-box {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 14px;
+    -fx-padding: 12px;
+}
+
+.dialer-key {
+    -fx-background-color: #334155;
+    -fx-background-radius: 40px;
+    -fx-min-width: 54px;
+    -fx-min-height: 54px;
+    -fx-max-width: 54px;
+    -fx-max-height: 54px;
+    -fx-alignment: CENTER;
+    -fx-cursor: hand;
+    -fx-text-fill: #f8fafc;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.dialer-key:hover {
+    -fx-background-color: #475569;
+}
+
+.dialer-key:pressed {
+    -fx-background-color: #64748b;
+}
+
+.dialer-display {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: #38bdf8;
+    -fx-font-family: 'Consolas', monospace;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 8px;
+}
+
+.call-btn-circle-accept {
+    -fx-background-color: #10b981;
+    -fx-background-radius: 50px;
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(three-pass-box, rgba(16, 185, 129, 0.4), 10, 0, 0, 2);
+}
+
+.call-btn-circle-accept:hover {
+    -fx-background-color: #059669;
+}
+
+.call-btn-circle-hangup {
+    -fx-background-color: #ef4444;
+    -fx-background-radius: 50px;
+    -fx-min-width: 56px;
+    -fx-min-height: 56px;
+    -fx-max-width: 56px;
+    -fx-max-height: 56px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(three-pass-box, rgba(239, 68, 68, 0.4), 10, 0, 0, 2);
+}
+
+.call-btn-circle-hangup:hover {
+    -fx-background-color: #dc2626;
+}
+
+/* =========================================================================
+   Badges, Score Meters & Feedback Panels
+   ========================================================================= */
 .badge-rendah {
     -fx-background-color: #dcfce7;
     -fx-text-fill: #15803d;
@@ -204,7 +397,6 @@
     -fx-font-size: 12px;
 }
 
-/* Disclaimer Alert Box */
 .disclaimer-box {
     -fx-background-color: #fffbeb;
     -fx-border-color: #fde68a;
@@ -213,4 +405,32 @@
     -fx-padding: 12px 16px;
     -fx-text-fill: #92400e;
     -fx-font-size: 12px;
+}
+
+/* =========================================================================
+   Education Module Styling (FR-11)
+   ========================================================================= */
+.edu-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #e2e8f0;
+    -fx-padding: 18px;
+}
+
+.edu-tag {
+    -fx-background-color: #e0f2fe;
+    -fx-text-fill: #0369a1;
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 12px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.emergency-banner {
+    -fx-background-color: #fef2f2;
+    -fx-border-color: #f87171;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 16px;
 }

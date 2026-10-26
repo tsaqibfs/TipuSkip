@@ -8,55 +8,101 @@
             fx:controller="com.tipuskip.controller.SimulasiPesanController"
             stylesheets="@../css/style.css">
 
-    <!-- Left: Scenario List & Info -->
+    <!-- Left Sidebar: Skenario Selector & Realtime Stats -->
     <left>
-        <VBox spacing="16" prefWidth="300" styleClass="card">
+        <VBox spacing="14" prefWidth="320" styleClass="card">
             <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
-            <Label text="Pilih Skenario Pesan" styleClass="card-title" />
-            <ComboBox fx:id="cbSkenario" promptText="Pilih Skenario..." maxWidth="Infinity" />
+            <Label text="💬 Simulasi Pesan Interaktif" styleClass="card-title" />
+            <Label text="Pilih skenario percakapan penipuan digital untuk menguji ketangkasan Anda." styleClass="card-subtitle" wrapText="true" />
 
-            <VBox fx:id="infoCard" spacing="8" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;">
-                <Label fx:id="lblKategori" text="Kategori: -" style="-fx-font-weight: bold; -fx-text-fill: #2563eb;" />
-                <Label fx:id="lblKesulitan" text="Tingkat: -" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
-                <Label fx:id="lblDeskripsi" text="Pilih skenario untuk memulai simulasi pesan interaktif." wrapText="true" style="-fx-text-fill: #475569;" />
+            <Separator />
+
+            <Label text="Pilih Skenario:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1e293b;" />
+            <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Pesan --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+
+            <!-- Scenario Metadata Box -->
+            <VBox fx:id="infoCard" spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label fx:id="lblKategori" text="Kategori: -" styleClass="edu-tag" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblKesulitan" text="MUDAH" styleClass="badge-rendah" />
+                </HBox>
+                <Label fx:id="lblDeskripsi" text="Silakan pilih skenario untuk memulai simulasi." wrapText="true" style="-fx-text-fill: #475569; -fx-font-size: 12px;" />
             </VBox>
 
-            <Button fx:id="btnMulaiSimulasi" text="▶ Mulai Simulasi" onAction="#handleMulaiSimulasi" maxWidth="Infinity" styleClass="btn-primary" />
-            <Button fx:id="btnReset" text="🔄 Reset / Ulangi" onAction="#handleReset" maxWidth="Infinity" styleClass="btn-secondary" />
+            <HBox spacing="8">
+                <Button fx:id="btnMulaiSimulasi" text="▶ Mulai Simulasi" onAction="#handleMulaiSimulasi" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="btn-primary" />
+                <Button fx:id="btnReset" text="🔄 Reset" onAction="#handleReset" styleClass="btn-secondary" />
+            </HBox>
 
             <Region VBox.vgrow="ALWAYS" />
 
-            <!-- Score Live Box -->
-            <VBox spacing="4" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 8px;">
-                <Label text="Skor Saat Ini" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
-                <Label fx:id="lblSkorLive" text="0 / 100" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+            <!-- Progress & Live Score Box -->
+            <VBox spacing="8" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 10px; -fx-border-color: #bfdbfe; -fx-border-radius: 10px;">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Status Langkah:" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblProgressLangkah" text="Langkah: -" style="-fx-font-size: 11px; -fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                </HBox>
+                <Separator />
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="2">
+                        <Label text="Skor Keamanan" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
+                        <Label fx:id="lblSkorLive" text="100 / 100" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblSkorStatus" text="🛡️ AMAN" styleClass="badge-rendah" />
+                </HBox>
             </VBox>
         </VBox>
     </left>
 
-    <!-- Center: Interactive Chat Container -->
+    <!-- Center: Authentic WhatsApp/Telegram-style Simulation -->
     <center>
-        <VBox spacing="16" style="-fx-padding: 0 0 0 20;">
-            <!-- Scrollable Chat Bubble Area -->
-            <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
-                        style="-fx-background-color: transparent; -fx-background: #ffffff; -fx-border-color: #e2e8f0; -fx-border-radius: 12px; -fx-background-radius: 12px;">
-                <VBox fx:id="chatBox" spacing="12" style="-fx-padding: 20px;">
-                    <!-- Chat bubbles injected here dynamically -->
-                </VBox>
-            </ScrollPane>
+        <VBox spacing="14" style="-fx-padding: 0 0 0 16;">
+            <!-- Chat Window Container -->
+            <VBox VBox.vgrow="ALWAYS" styleClass="chat-window">
+                <!-- Chat Window Top Header -->
+                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="chat-header">
+                    <StackPane styleClass="chat-avatar-circle">
+                        <Label fx:id="lblAvatarText" text="👤" style="-fx-font-size: 18px; -fx-text-fill: #ffffff;" />
+                    </StackPane>
+                    <VBox spacing="2">
+                        <Label fx:id="lblChatHeaderName" text="Pilih Skenario untuk Memulai" styleClass="chat-header-title" />
+                        <Label fx:id="lblChatHeaderStatus" text="Nomor Tidak Dikenal (+62-XXX) • Simulasi Aman" styleClass="chat-header-status" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="🔒 Enkripsi Simulasi Edukasi" style="-fx-text-fill: #a7f3d0; -fx-font-size: 11px;" />
+                </HBox>
 
-            <!-- Feedback Banner (shows consequence/feedback after choosing response) -->
-            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
-                  style="-fx-background-color: #fef3c7; -fx-border-color: #fde68a; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 12px;">
-                <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-text-fill: #92400e;" />
-                <Label fx:id="lblFeedbackDetail" text="Penjelasan..." wrapText="true" style="-fx-text-fill: #78350f;" />
+                <!-- Scrollable Chat Bubble Area -->
+                <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
+                            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 12px;">
+                    <VBox fx:id="chatBox" spacing="14" style="-fx-padding: 8px;">
+                        <!-- Bubbles dynamically added -->
+                    </VBox>
+                </ScrollPane>
             </VBox>
 
-            <!-- Bottom: User Response Choices -->
+            <!-- Feedback & Consequences Banner -->
+            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
+                  style="-fx-padding: 12px; -fx-background-radius: 8px; -fx-border-radius: 8px;">
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label fx:id="lblFeedbackIcon" text="💡" style="-fx-font-size: 16px;" />
+                    <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                </HBox>
+                <Label fx:id="lblFeedbackDetail" text="Penjelasan konsekuensi atas pilihan Anda..." wrapText="true" />
+            </VBox>
+
+            <!-- User Response Choices Container -->
             <VBox fx:id="responsesContainer" spacing="8" styleClass="card">
-                <Label text="Tentukan Respons Anda:" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="💬 Tentukan Balasan Respons Anda:" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Pilih opsi yang paling aman dan logis" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                </HBox>
                 <VBox fx:id="choiceButtonsBox" spacing="8">
-                    <!-- Choice buttons generated dynamically -->
+                    <!-- Dynamic choice buttons inserted here -->
                 </VBox>
             </VBox>
         </VBox>

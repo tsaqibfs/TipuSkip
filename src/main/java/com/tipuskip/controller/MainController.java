@@ -22,6 +22,7 @@ public class MainController {
     @FXML private Button btnNavPesan;
     @FXML private Button btnNavTelepon;
     @FXML private Button btnNavAnalisis;
+    @FXML private Button btnNavEdukasi;
     @FXML private Button btnNavRiwayat;
     @FXML private Button btnNavAdmin;
 
@@ -44,6 +45,11 @@ public class MainController {
     @FXML
     public void handleNavAnalisis() {
         loadView("/com/tipuskip/view/analisis.fxml", btnNavAnalisis);
+    }
+
+    @FXML
+    public void handleNavEdukasi() {
+        loadView("/com/tipuskip/view/edukasi.fxml", btnNavEdukasi);
     }
 
     @FXML
@@ -72,7 +78,7 @@ public class MainController {
     }
 
     private void setActiveNavButton(Button active) {
-        Button[] buttons = {btnNavPesan, btnNavTelepon, btnNavAnalisis, btnNavRiwayat, btnNavAdmin};
+        Button[] buttons = {btnNavPesan, btnNavTelepon, btnNavAnalisis, btnNavEdukasi, btnNavRiwayat, btnNavAdmin};
         for (Button b : buttons) {
             if (b != null) {
                 b.getStyleClass().remove("nav-button-active");

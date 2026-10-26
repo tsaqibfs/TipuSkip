@@ -10,28 +10,29 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.tipuskip.controller.MainController"
-            prefHeight="720.0" prefWidth="1080.0"
+            prefHeight="750.0" prefWidth="1100.0"
             stylesheets="@../css/style.css">
 
     <!-- Top Navigation Bar -->
     <top>
-        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="12">
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="10">
             <Label text="🛡️ TipuSkip" styleClass="brand-title" />
-            <Label text="v1.0" style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;" />
+            <Label text="v1.0" style="-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-padding: 4 0 0 0;" />
 
             <Region HBox.hgrow="ALWAYS" />
 
             <Button fx:id="btnNavPesan" text="💬 Simulasi Pesan" onAction="#handleNavPesan" styleClass="nav-button" />
             <Button fx:id="btnNavTelepon" text="📞 Simulasi Telepon" onAction="#handleNavTelepon" styleClass="nav-button" />
             <Button fx:id="btnNavAnalisis" text="🔍 Analisis Tangkapan Layar" onAction="#handleNavAnalisis" styleClass="nav-button" />
-            <Button fx:id="btnNavRiwayat" text="📜 Riwayat &amp; Materi" onAction="#handleNavRiwayat" styleClass="nav-button" />
+            <Button fx:id="btnNavEdukasi" text="📚 Modul Edukasi" onAction="#handleNavEdukasi" styleClass="nav-button" />
+            <Button fx:id="btnNavRiwayat" text="📜 Riwayat Aktivitas" onAction="#handleNavRiwayat" styleClass="nav-button" />
             <Button fx:id="btnNavAdmin" text="⚙️ Admin Panel" onAction="#handleNavAdmin" styleClass="nav-button" />
         </HBox>
     </top>
 
     <!-- Content Center StackPane -->
     <center>
-        <StackPane fx:id="contentArea" style="-fx-padding: 20px;">
+        <StackPane fx:id="contentArea" style="-fx-padding: 16px;">
             <!-- Dynamic view loaded here -->
         </StackPane>
     </center>

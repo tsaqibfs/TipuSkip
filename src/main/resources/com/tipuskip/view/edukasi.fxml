@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tipuskip.controller.EdukasiController"
+      spacing="16" stylesheets="@../css/style.css">
+
+    <!-- Header Section -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox spacing="2">
+            <Label text="📚 Pusat Edukasi Pencegahan Penipuan Digital (FR-11)" styleClass="card-title" />
+            <Label text="Kenali taktik rekayasa sosial, ciri-ciri modus penipuan terkini, dan langkah darurat perlindungan diri." styleClass="card-subtitle" />
+        </VBox>
+        <Region HBox.hgrow="ALWAYS" />
+        <Label text="🛡️ Anti-Scam Guide 2026" styleClass="badge-rendah" />
+    </HBox>
+
+    <!-- Main Tab Navigation for Educational Materials -->
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+
+        <!-- TAB 1: 6 MODUS PENIPUAN TERPOPULER -->
+        <Tab text="📌 6 Modus Terpopuler">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 12px 0 0 0;">
+                <VBox spacing="14">
+                    <!-- Modus 1 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="1. Modus Malware Berkas APK (Kurir Paket &amp; Surat Undangan)" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: KRITIS" styleClass="badge-tinggi" />
+                        </HBox>
+                        <Label text="Pelaku mengirimkan pesan WhatsApp dengan berkas berakhiran .APK berkedok foto paket rusak (J&amp;T, JNE, SiCepat), surat undangan pernikahan digital, atau tagihan PLN. Saat berkas diinstal, aplikasi menyadap izin SMS untuk meneruskan kode OTP mobile banking korban secara diam-diam." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Foto asli selalu berformat .JPG/.PNG. Jangan pernah menginstal berkas .APK di luar toko aplikasi resmi!" wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Modus 2 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="2. Modus Freelance Task Scam (Like &amp; Subscribe Berhadiah)" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: TINGGI" styleClass="badge-tinggi" />
+                        </HBox>
+                        <Label text="Korban ditawari pekerjaan paruh waktu mudah seperti memberi 'Like' pada video YouTube atau follow akun e-commerce dengan imbalan harian. Korban diberi imbalan kecil di awal (misal Rp30.000) untuk membangun kepercayaan. Selanjutnya korban digiring ke grup Telegram dan dipaksa mentransfer uang deposit jutaan rupiah dengan dalih misi VIP berbonus besar." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Pekerjaan sah membayar Anda, bukan meminta Anda mentransfer uang modal atau deposit terlebih dahulu." wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Modus 3 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="3. Modus Panggilan Telepon Darurat Bank &amp; Manipulasi OTP" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: KRITIS" styleClass="badge-tinggi" />
+                        </HBox>
+                        <Label text="Penipu menelepon mengaku sebagai customer service resmi bank. Pelaku mengabarkan adanya transaksi liar ratusan ribu hingga jutaan rupiah dan mendesak nasabah menyebutkan 6 digit kode OTP verifikasi untuk 'membatalkan transaksi'. Kode tersebut sebenarnya adalah OTP pengesahan transfer milik penipu." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Petugas bank resmi TIDAK PERNAH meminta kode OTP atau PIN Anda dalam kondisi apa pun. Segera tutup telepon dan verifikasi ke nomor resmi bank!" wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Modus 4 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="4. Modus Kenaikan Tarif Bank Menjadi Rp150.000 / Bulan" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: TINGGI" styleClass="badge-sedang" />
+                        </HBox>
+                        <Label text="Penelepon atau pesan WA mengabarkan adanya kenaikan tarif autodebet antarbank menjadi nominal yang sangat mahal. Pelaku memanfaatkan rasa keberatan korban agar korban bersedia mengisi form pembatalan online yang meminta nomor kartu ATM, masa berlaku, dan 3 digit nomor CVV/CVC rahasia di balik kartu." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Jangan pernah membagikan 3 digit kode CVV di balik kartu debit/kredit kepada siapa pun atau di formulir online yang tidak jelas." wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Modus 5 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="5. Modus Surat Tilang Elektronik (ETLE) Palsu" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: TINGGI" styleClass="badge-sedang" />
+                        </HBox>
+                        <Label text="Pelaku mengaku Korlantas Polri mengabarkan pelanggaran tilang kamera ETLE via pesan singkat. Korban diancam pemblokiran STNK dalam 24 jam jika tidak membuka berkas lampiran yang ternyata adalah file APK pencuri data." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Surat tilang resmi dikirim melalui pos fisik oleh Korlantas Polri atau dapat dicek mandiri melalui situs etle-korlantas.info." wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Modus 6 -->
+                    <VBox styleClass="edu-card" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="6. Modus Pemenang Undian Marketplace &amp; Tautan Phishing" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label text="Tingkat Bahaya: SEDANG" styleClass="badge-rendah" />
+                        </HBox>
+                        <Label text="Pengumuman fiktif via SMS bahwa nomor Anda memenangkan ratusan juta dari Shopee, Tokopedia, atau Telkomsel. Tautan mengarah ke situs kloningan yang meminta input username, password, dan OTP akun e-wallet." wrapText="true" style="-fx-text-fill: #475569;" />
+                        <HBox alignment="CENTER_LEFT" spacing="6" style="-fx-background-color: #f0fdf4; -fx-padding: 8px 12px; -fx-background-radius: 6px;">
+                            <Label text="💡 Trik Pencegahan:" style="-fx-font-weight: bold; -fx-text-fill: #166534;" />
+                            <Label text="Cek alamat URL pada browser. Pastikan domain resmi berakhiran .co.id atau .com resmi perusahaan, bukan domain gratisan .online atau shortlink." wrapText="true" style="-fx-text-fill: #15803d;" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- TAB 2: CIRI-CIRI UTAMA (RED FLAGS) -->
+        <Tab text="🚩 Ciri-Ciri Utama (Red Flags)">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 12px 0 0 0;">
+                <VBox spacing="14">
+                    <VBox styleClass="card" spacing="12">
+                        <Label text="5 Sinyal Bahaya yang Selalu Ada Pada Pesan Penipuan:" styleClass="card-title" />
+
+                        <VBox spacing="10">
+                            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #fef2f2; -fx-padding: 12px; -fx-background-radius: 8px;">
+                                <Label text="⏰" style="-fx-font-size: 24px;" />
+                                <VBox spacing="2">
+                                    <Label text="1. Tekanan Waktu &amp; Urgensi Ekstrem" style="-fx-font-weight: bold; -fx-text-fill: #991b1b;" />
+                                    <Label text="Menggunakan kata-kata seperti 'dalam 10 menit', 'sebelum diblokir', 'hangus sekarang'. Tujuannya memicu rasa panik sehingga korban tidak sempat berpikir logis." wrapText="true" style="-fx-text-fill: #7f1d1d;" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #fef2f2; -fx-padding: 12px; -fx-background-radius: 8px;">
+                                <Label text="🔐" style="-fx-font-size: 24px;" />
+                                <VBox spacing="2">
+                                    <Label text="2. Permintaan Data Sensitif (OTP, PIN, CVV)" style="-fx-font-weight: bold; -fx-text-fill: #991b1b;" />
+                                    <Label text="Meminta 6 digit kode OTP SMS, kata sandi, PIN transaksi, atau 3 digit CVV di balik kartu ATM. Ingat: data ini adalah kunci brankas digital Anda." wrapText="true" style="-fx-text-fill: #7f1d1d;" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #fef2f2; -fx-padding: 12px; -fx-background-radius: 8px;">
+                                <Label text="🔗" style="-fx-font-size: 24px;" />
+                                <VBox spacing="2">
+                                    <Label text="3. Penggunaan Tautan Singkat (Shortlink) Mencurigakan" style="-fx-font-weight: bold; -fx-text-fill: #991b1b;" />
+                                    <Label text="Penggunaan s.id, bit.ly, tinyurl, atau domain yang sengaja dimiripkan (misal: bca-klik-update.online). Tautan resmi institusi selalu menggunakan domain terverifikasi." wrapText="true" style="-fx-text-fill: #7f1d1d;" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #fef2f2; -fx-padding: 12px; -fx-background-radius: 8px;">
+                                <Label text="📦" style="-fx-font-size: 24px;" />
+                                <VBox spacing="2">
+                                    <Label text="4. Berkas Berakhiran .APK di Luar Toko Aplikasi" style="-fx-font-weight: bold; -fx-text-fill: #991b1b;" />
+                                    <Label text="Nama berkas seringkali menipu dengan ekstensi ganda seperti 'Surat_Undangan.pdf.apk'. Android akan mengeksekusi berkas ini sebagai aplikasi, bukan dokumen." wrapText="true" style="-fx-text-fill: #7f1d1d;" />
+                                </VBox>
+                            </HBox>
+
+                            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: #fef2f2; -fx-padding: 12px; -fx-background-radius: 8px;">
+                                <Label text="💸" style="-fx-font-size: 24px;" />
+                                <VBox spacing="2">
+                                    <Label text="5. Rekening Pembayaran Atas Nama Pribadi" style="-fx-font-weight: bold; -fx-text-fill: #991b1b;" />
+                                    <Label text="Instansi resmi seperti Kepolisian, Bank, atau Marketplace selalu menggunakan Rekening Virtual Account instansi resmi, BUKAN rekening perseorangan." wrapText="true" style="-fx-text-fill: #7f1d1d;" />
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- TAB 3: KAMUS ISTILAH KEJAHATAN SIBER -->
+        <Tab text="📖 Kamus Istilah Siber">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 12px 0 0 0;">
+                <VBox spacing="12">
+                    <GridPane hgap="14" vgap="14">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50" />
+                            <ColumnConstraints percentWidth="50" />
+                        </columnConstraints>
+
+                        <!-- Item 1 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="Phishing" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Upaya memancing korban untuk menyerahkan informasi pribadi (username, password, nomor kartu) melalui situs web tiruan atau formulir palsu." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+
+                        <!-- Item 2 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="Vishing (Voice Phishing)" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Penipuan via panggilan telepon suara dengan memanipulasi psikologis korban berpura-pura menjadi aparat penegak hukum atau call center bank." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+
+                        <!-- Item 3 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="Smishing (SMS Phishing)" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Taktik phishing yang dikirimkan melalui pesan teks SMS atau aplikasi pesan instan WhatsApp/Telegram." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+
+                        <!-- Item 4 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="Social Engineering (Rekayasa Sosial)" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Seni memanipulasi kelemahan psikologis manusia (rasa panik, ketamakan, rasa takut, belas kasihan) agar menuruti kehendak penyerang siber." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+
+                        <!-- Item 5 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                            <Label text="APK Sniffer / Trojan Banker" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Program jahat Android yang menyamar sebagai aplikasi lain untuk menyadap izin akses SMS (RECEIVE_SMS) dan membaca kode OTP secara sembunyi-sembunyi." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+
+                        <!-- Item 6 -->
+                        <VBox styleClass="edu-card" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Label text="Caller ID Spoofing" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2563eb;" />
+                            <Label text="Teknologi untuk memalsukan nomor telepon yang muncul pada layar penerima agar tampak seperti nomor resmi instansi perbankan." wrapText="true" style="-fx-text-fill: #475569;" />
+                        </VBox>
+                    </GridPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- TAB 4: PANDUAN TINDAKAN DARURAT -->
+        <Tab text="🚨 Panduan Darurat Jika Menjadi Korban">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 12px 0 0 0;">
+                <VBox spacing="14">
+                    <VBox styleClass="emergency-banner" spacing="10">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="⚠️ TINDAKAN 10 MENIT PERTAMA SETELAH TERJEBAK:" style="-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #b91c1c;" />
+                        </HBox>
+                        <VBox spacing="6">
+                            <Label text="1. Putuskan Koneksi Internet: Matikan Wi-Fi dan Data Seluler (Mode Pesawat) agar aplikasi penyadap APK tidak bisa mengirim SMS OTP ke server pelaku." wrapText="true" style="-fx-text-fill: #991b1b; -fx-font-weight: bold;" />
+                            <Label text="2. Hubungi Call Center Resmi Bank: Minta blokir kartu ATM, user ID mobile banking, dan rekening penampung segera." wrapText="true" style="-fx-text-fill: #991b1b; -fx-font-weight: bold;" />
+                            <Label text="3. Hapus Aplikasi Mencurigakan: Buka Pengaturan HP &gt; Aplikasi &gt; Cari aplikasi mencurigakan &gt; Hapus Instalasi (Uninstall)." wrapText="true" style="-fx-text-fill: #991b1b;" />
+                            <Label text="4. Ganti Kata Sandi &amp; PIN: Gunakan perangkat lain yang bersih untuk mengganti PIN m-banking, email, dan akun e-wallet." wrapText="true" style="-fx-text-fill: #991b1b;" />
+                        </VBox>
+                    </VBox>
+
+                    <!-- Official Contact Directory -->
+                    <VBox styleClass="card" spacing="10">
+                        <Label text="📞 Kanal Aduan &amp; Layanan Pengaduan Resmi Indonesia:" styleClass="card-title" />
+
+                        <GridPane hgap="12" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="33" />
+                                <ColumnConstraints percentWidth="33" />
+                                <ColumnConstraints percentWidth="34" />
+                            </columnConstraints>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <Label text="Otoritas Jasa Keuangan (OJK)" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="Telepon: 157" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="WhatsApp: 081-157-157-157" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <Label text="Patroli Siber Polri" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="patrolisiber.id" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="Layanan Laporan Kejahatan Siber" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                                <Label text="Cek Rekening Kominfo" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="cekrekening.id" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="Cek &amp; Laporkan Rekening Penipu" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <Label text="Aduan Konten Kominfo" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="aduankonten.id" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="Laporan website phishing &amp; spam" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Label text="Layanan HaloBCA" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="Telepon: 1500888" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="Blokir Rekening &amp; Kartu Segera" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+
+                            <VBox style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;" spacing="4" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <Label text="Call Center Bank Mandiri" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                                <Label text="Telepon: 14000" style="-fx-text-fill: #2563eb; -fx-font-weight: bold;" />
+                                <Label text="Mandiri Call 24 Jam" style="-fx-text-fill: #64748b; -fx-font-size: 11px;" />
+                            </VBox>
+                        </GridPane>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
+
+</VBox>
