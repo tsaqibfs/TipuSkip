@@ -10,13 +10,14 @@ import java.util.List;
  * Bagian Tanggung Jawab Anggota 2.
  */
 public interface IAdminService {
-    // Kelola Skenario
+    // Kelola Skenario (FR-12)
     List<Skenario> getAllSkenario();
     boolean tambahSkenario(Skenario skenario);
     boolean ubahSkenario(Skenario skenario);
     boolean hapusSkenario(int skenarioId);
+    boolean ubahStatusAktifSkenario(int skenarioId, boolean statusAktif);
 
-    // Kelola Indikator
+    // Kelola Indikator (FR-13)
     List<IndikatorPenipuan> getAllIndikator();
     boolean tambahIndikator(IndikatorPenipuan indikator);
     boolean ubahIndikator(IndikatorPenipuan indikator);
