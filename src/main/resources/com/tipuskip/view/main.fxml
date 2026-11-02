@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -16,7 +18,10 @@
     <!-- Top Navigation Bar -->
     <top>
         <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="10">
-            <Label text="🛡️ TipuSkip" styleClass="brand-title" />
+            <ImageView fitWidth="28.0" fitHeight="28.0" preserveRatio="true">
+                <Image url="@../images/app-icon-64.png" />
+            </ImageView>
+            <Label text="TipuSkip" styleClass="brand-title" />
             <Label text="v1.0" style="-fx-text-fill: #64748b; -fx-font-size: 11px; -fx-padding: 4 0 0 0;" />
 
             <Region HBox.hgrow="ALWAYS" />
