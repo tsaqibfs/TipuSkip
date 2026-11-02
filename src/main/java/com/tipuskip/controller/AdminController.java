@@ -14,7 +14,7 @@ import javafx.scene.control.*;
 import java.util.List;
 
 /**
- * Controller untuk Panel Admin (CRUD Skenario dan Indikator).
+ * Controller untuk Panel Admin (CRUD Skenario dan Indikator - FR-12 & FR-13).
  * Bagian Tanggung Jawab Anggota 2.
  */
 public class AdminController {
@@ -28,11 +28,14 @@ public class AdminController {
     @FXML private TableColumn<Skenario, String> colSkTingkat;
     @FXML private TableColumn<Skenario, Boolean> colSkStatus;
 
+    @FXML private Label lblFormSkenario;
     @FXML private TextField txtSkJudul;
     @FXML private TextArea txtSkDeskripsi;
     @FXML private ComboBox<JenisSkenario> cbSkJenis;
     @FXML private TextField txtSkKategori;
     @FXML private ComboBox<TingkatKesulitan> cbSkTingkat;
+
+    private Skenario selectedSkenario = null;
 
     // Indikator Controls
     @FXML private TableView<IndikatorPenipuan> tableIndikator;
@@ -43,12 +46,15 @@ public class AdminController {
     @FXML private TableColumn<IndikatorPenipuan, Integer> colIndBobot;
     @FXML private TableColumn<IndikatorPenipuan, Boolean> colIndStatus;
 
+    @FXML private Label lblFormIndikator;
     @FXML private TextField txtIndNama;
     @FXML private TextField txtIndPola;
     @FXML private ComboBox<TipePencocokan> cbIndTipe;
     @FXML private Spinner<Integer> spnIndBobot;
     @FXML private TextArea txtIndDeskripsi;
     @FXML private TextArea txtIndSaran;
+
+    private IndikatorPenipuan selectedIndikator = null;
 
     private IAdminService adminService;
 
@@ -64,6 +70,37 @@ public class AdminController {
 
         setupTabelSkenario();
         setupTabelIndikator();
+
+        // Listener untuk seleksi tabel skenario
+        tableSkenario.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                selectedSkenario = newVal;
+                txtSkJudul.setText(newVal.getJudul());
+                txtSkDeskripsi.setText(newVal.getDeskripsi());
+                cbSkJenis.setValue(newVal.getJenis());
+                txtSkKategori.setText(newVal.getKategori());
+                cbSkTingkat.setValue(newVal.getTingkatKesulitan());
+                if (lblFormSkenario != null) {
+                    lblFormSkenario.setText("Edit Skenario [ID: " + newVal.getId() + "]");
+                }
+            }
+        });
+
+        // Listener untuk seleksi tabel indikator
+        tableIndikator.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                selectedIndikator = newVal;
+                txtIndNama.setText(newVal.getNamaIndikator());
+                txtIndPola.setText(newVal.getPolaPencocokan());
+                cbIndTipe.setValue(newVal.getTipePencocokan());
+                spnIndBobot.getValueFactory().setValue(newVal.getBobotRisiko());
+                txtIndDeskripsi.setText(newVal.getDeskripsi());
+                txtIndSaran.setText(newVal.getSaranVerifikasi());
+                if (lblFormIndikator != null) {
+                    lblFormIndikator.setText("Edit Indikator [ID: " + newVal.getId() + "]");
+                }
+            }
+        });
 
         muatDataSkenario();
         muatDataIndikator();
@@ -117,12 +154,38 @@ public class AdminController {
         boolean success = adminService.tambahSkenario(s);
         if (success) {
             AlertHelper.showInfo("Sukses", "Skenario berhasil ditambahkan.");
-            txtSkJudul.clear();
-            txtSkDeskripsi.clear();
-            txtSkKategori.clear();
+            handleResetFormSkenario();
             muatDataSkenario();
         } else {
             AlertHelper.showError("Gagal", "Gagal menyimpan skenario ke basis data.");
+        }
+    }
+
+    @FXML
+    public void handleUbahSkenario() {
+        if (selectedSkenario == null) {
+            AlertHelper.showWarning("Peringatan", "Pilih skenario yang ingin diubah dari tabel terlebih dahulu.");
+            return;
+        }
+
+        if (txtSkJudul.getText().isBlank() || cbSkJenis.getValue() == null || cbSkTingkat.getValue() == null) {
+            AlertHelper.showWarning("Validasi", "Judul, jenis, dan tingkat kesulitan tidak boleh kosong.");
+            return;
+        }
+
+        selectedSkenario.setJudul(txtSkJudul.getText().trim());
+        selectedSkenario.setDeskripsi(txtSkDeskripsi.getText().trim());
+        selectedSkenario.setJenis(cbSkJenis.getValue());
+        selectedSkenario.setKategori(txtSkKategori.getText().trim().isEmpty() ? "Umum" : txtSkKategori.getText().trim());
+        selectedSkenario.setTingkatKesulitan(cbSkTingkat.getValue());
+
+        boolean success = adminService.ubahSkenario(selectedSkenario);
+        if (success) {
+            AlertHelper.showInfo("Sukses", "Skenario berhasil diperbarui.");
+            handleResetFormSkenario();
+            muatDataSkenario();
+        } else {
+            AlertHelper.showError("Gagal", "Gagal memperbarui skenario.");
         }
     }
 
@@ -136,7 +199,40 @@ public class AdminController {
 
         if (AlertHelper.showConfirmation("Konfirmasi Hapus", "Yakin ingin menghapus skenario '" + selected.getJudul() + "'?")) {
             adminService.hapusSkenario(selected.getId());
+            handleResetFormSkenario();
             muatDataSkenario();
+        }
+    }
+
+    @FXML
+    public void handleToggleStatusSkenario() {
+        Skenario selected = tableSkenario.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertHelper.showWarning("Peringatan", "Pilih skenario dari tabel untuk mengubah status aktif.");
+            return;
+        }
+
+        boolean newStatus = !selected.isStatusAktif();
+        boolean success = adminService.ubahStatusAktifSkenario(selected.getId(), newStatus);
+        if (success) {
+            AlertHelper.showInfo("Sukses", "Status skenario berhasil diubah menjadi: " + (newStatus ? "AKTIF" : "NONAKTIF"));
+            muatDataSkenario();
+        } else {
+            AlertHelper.showError("Gagal", "Gagal mengubah status aktif skenario.");
+        }
+    }
+
+    @FXML
+    public void handleResetFormSkenario() {
+        selectedSkenario = null;
+        tableSkenario.getSelectionModel().clearSelection();
+        txtSkJudul.clear();
+        txtSkDeskripsi.clear();
+        cbSkJenis.setValue(null);
+        txtSkKategori.clear();
+        cbSkTingkat.setValue(null);
+        if (lblFormSkenario != null) {
+            lblFormSkenario.setText("Kelola Skenario (Tambah / Ubah)");
         }
     }
 
@@ -159,13 +255,39 @@ public class AdminController {
         boolean success = adminService.tambahIndikator(ind);
         if (success) {
             AlertHelper.showInfo("Sukses", "Indikator penipuan berhasil disimpan.");
-            txtIndNama.clear();
-            txtIndPola.clear();
-            txtIndDeskripsi.clear();
-            txtIndSaran.clear();
+            handleResetFormIndikator();
             muatDataIndikator();
         } else {
             AlertHelper.showError("Gagal", "Gagal menyimpan indikator ke basis data.");
+        }
+    }
+
+    @FXML
+    public void handleUbahIndikator() {
+        if (selectedIndikator == null) {
+            AlertHelper.showWarning("Peringatan", "Pilih indikator yang ingin diubah dari tabel terlebih dahulu.");
+            return;
+        }
+
+        if (txtIndNama.getText().isBlank() || txtIndPola.getText().isBlank() || cbIndTipe.getValue() == null) {
+            AlertHelper.showWarning("Validasi", "Nama indikator, pola pencocokan, dan tipe wajib diisi.");
+            return;
+        }
+
+        selectedIndikator.setNamaIndikator(txtIndNama.getText().trim());
+        selectedIndikator.setPolaPencocokan(txtIndPola.getText().trim());
+        selectedIndikator.setTipePencocokan(cbIndTipe.getValue());
+        selectedIndikator.setBobotRisiko(spnIndBobot.getValue());
+        selectedIndikator.setDeskripsi(txtIndDeskripsi.getText().trim());
+        selectedIndikator.setSaranVerifikasi(txtIndSaran.getText().trim());
+
+        boolean success = adminService.ubahIndikator(selectedIndikator);
+        if (success) {
+            AlertHelper.showInfo("Sukses", "Indikator penipuan berhasil diperbarui.");
+            handleResetFormIndikator();
+            muatDataIndikator();
+        } else {
+            AlertHelper.showError("Gagal", "Gagal memperbarui indikator.");
         }
     }
 
@@ -179,7 +301,41 @@ public class AdminController {
 
         if (AlertHelper.showConfirmation("Konfirmasi Hapus", "Yakin ingin menghapus indikator '" + selected.getNamaIndikator() + "'?")) {
             adminService.hapusIndikator(selected.getId());
+            handleResetFormIndikator();
             muatDataIndikator();
+        }
+    }
+
+    @FXML
+    public void handleToggleStatusIndikator() {
+        IndikatorPenipuan selected = tableIndikator.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertHelper.showWarning("Peringatan", "Pilih indikator dari tabel untuk mengubah status aktif.");
+            return;
+        }
+
+        boolean newStatus = !selected.isStatusAktif();
+        boolean success = adminService.ubahStatusAktifIndikator(selected.getId(), newStatus);
+        if (success) {
+            AlertHelper.showInfo("Sukses", "Status indikator berhasil diubah menjadi: " + (newStatus ? "AKTIF" : "NONAKTIF"));
+            muatDataIndikator();
+        } else {
+            AlertHelper.showError("Gagal", "Gagal mengubah status aktif indikator.");
+        }
+    }
+
+    @FXML
+    public void handleResetFormIndikator() {
+        selectedIndikator = null;
+        tableIndikator.getSelectionModel().clearSelection();
+        txtIndNama.clear();
+        txtIndPola.clear();
+        cbIndTipe.setValue(null);
+        spnIndBobot.getValueFactory().setValue(25);
+        txtIndDeskripsi.clear();
+        txtIndSaran.clear();
+        if (lblFormIndikator != null) {
+            lblFormIndikator.setText("Kelola Indikator (Tambah / Ubah)");
         }
     }
 }

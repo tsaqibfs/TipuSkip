@@ -217,6 +217,20 @@ public class SkenarioDAOImpl implements SkenarioDAO {
         return false;
     }
 
+    @Override
+    public boolean toggleStatus(int id, boolean statusAktif) {
+        String sql = "UPDATE skenario SET status_aktif = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setBoolean(1, statusAktif);
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.error("Gagal mengubah status aktif skenario id {}: {}", id, e.getMessage());
+        }
+        return false;
+    }
+
     private Skenario mapResultSetToSkenario(ResultSet rs) throws SQLException {
         Skenario s = new Skenario();
         s.setId(rs.getInt("id"));
