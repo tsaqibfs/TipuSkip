@@ -8,59 +8,170 @@
             fx:controller="com.tipuskip.controller.SimulasiTeleponController"
             stylesheets="@../css/style.css">
 
-    <!-- Left: Scenario selector -->
+    <!-- Left Sidebar: Skenario Selector & Realtime Stats -->
     <left>
-        <VBox spacing="16" prefWidth="300" styleClass="card">
+        <VBox spacing="14" prefWidth="320" styleClass="card">
             <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
-            <Label text="Pilih Skenario Telepon" styleClass="card-title" />
-            <ComboBox fx:id="cbSkenario" promptText="Pilih Skenario Telepon..." maxWidth="Infinity" />
+            <Label text="📞 Simulasi Telepon &amp; Dialer" styleClass="card-title" />
+            <Label text="Latih kewaspadaan menghadapi rekayasa sosial (vishing) melalui simulasi panggilan interaktif." styleClass="card-subtitle" wrapText="true" />
 
-            <VBox spacing="8" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px;">
-                <Label fx:id="lblKategori" text="Kategori: -" style="-fx-font-weight: bold; -fx-text-fill: #2563eb;" />
-                <Label fx:id="lblKesulitan" text="Tingkat: -" style="-fx-font-size: 12px; -fx-text-fill: #64748b;" />
-                <Label fx:id="lblDeskripsi" text="Simulasi panggilan telepon palsu (social engineering)." wrapText="true" style="-fx-text-fill: #475569;" />
+            <Separator />
+
+            <Label text="Pilih Skenario Panggilan:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1e293b;" />
+            <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Telepon --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+
+            <!-- Scenario Details Box -->
+            <VBox spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label fx:id="lblKategori" text="Kategori: -" styleClass="edu-tag" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblKesulitan" text="SEDANG" styleClass="badge-sedang" />
+                </HBox>
+                <Label fx:id="lblDeskripsi" text="Pilih skenario untuk memulai simulasi panggilan masuk." wrapText="true" style="-fx-text-fill: #475569; -fx-font-size: 12px;" />
             </VBox>
 
-            <Button fx:id="btnMulaiPanggilan" text="📞 Mulai Panggilan" onAction="#handleMulaiPanggilan" maxWidth="Infinity" styleClass="btn-primary" />
-            <Button fx:id="btnTutupPanggilan" text="🛑 Tutup / Akhiri" onAction="#handleTutupPanggilan" maxWidth="Infinity" styleClass="btn-danger" />
+            <HBox spacing="8">
+                <Button fx:id="btnMulaiPanggilan" text="📞 Mulai Panggilan" onAction="#handleMulaiPanggilan" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="btn-primary" />
+                <Button fx:id="btnTutupPanggilan" text="🛑 Tutup / Tolak" onAction="#handleTutupPanggilan" styleClass="btn-danger" />
+            </HBox>
 
             <Region VBox.vgrow="ALWAYS" />
 
-            <VBox spacing="4" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 8px;">
-                <Label text="Skor Kewaspadaan" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
-                <Label fx:id="lblSkorLive" text="0 / 100" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+            <!-- Phone Call Education Tip Card -->
+            <VBox spacing="4" style="-fx-background-color: #fefce8; -fx-border-color: #fef08a; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px;">
+                <Label text="💡 Tips Anti-Penipuan Telepon:" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #854d0e;" />
+                <Label text="Pihak bank/instansi resmi TIDAK PERNAH meminta kode OTP, PIN, atau 3 digit CVV kartu ATM Anda!" wrapText="true" style="-fx-font-size: 11px; -fx-text-fill: #713f12;" />
+            </VBox>
+
+            <!-- Score Live Box -->
+            <VBox spacing="6" style="-fx-background-color: #eff6ff; -fx-padding: 12px; -fx-background-radius: 10px; -fx-border-color: #bfdbfe; -fx-border-radius: 10px;">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="2">
+                        <Label text="Skor Kewaspadaan" style="-fx-font-size: 11px; -fx-text-fill: #1e40af; -fx-font-weight: bold;" />
+                        <Label fx:id="lblSkorLive" text="100 / 100" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1d4ed8;" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblSkorStatus" text="🛡️ AMAN" styleClass="badge-rendah" />
+                </HBox>
             </VBox>
         </VBox>
     </left>
 
-    <!-- Center: Phone UI -->
+    <!-- Center: SmartPhone Frame with Caller ID & Interactive Dialer -->
     <center>
-        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 0 0 0 24;">
-            <!-- Call Visual Card -->
-            <VBox alignment="CENTER" spacing="12" styleClass="phone-screen" prefHeight="320">
-                <StackPane styleClass="phone-avatar">
-                    <Label text="👤" style="-fx-font-size: 40px;" />
-                </StackPane>
-                <Label fx:id="lblCallerName" text="+62-812-XXXX-XXXX (Panggilan Masuk)" styleClass="phone-caller-name" />
-                <Label fx:id="lblCallStatus" text="Status: Menunggu Skenario..." styleClass="phone-status" />
+        <VBox spacing="14" alignment="TOP_CENTER" style="-fx-padding: 0 0 0 16;">
+            <!-- Smartphone Shell Container -->
+            <HBox spacing="16" VBox.vgrow="ALWAYS">
+                <!-- Phone Display (Caller ID & Speech Dialogue) -->
+                <VBox spacing="12" HBox.hgrow="ALWAYS" styleClass="phone-container">
+                    <!-- Status Bar -->
+                    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="phone-status-bar">
+                        <Label text="09:41" style="-fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="📶 5G" style="-fx-text-fill: #94a3b8;" />
+                        <Label text="🔋 98%" style="-fx-text-fill: #94a3b8;" />
+                    </HBox>
 
-                <!-- Speech Dialogue Box -->
-                <VBox alignment="CENTER" maxWidth="550" style="-fx-background-color: rgba(255,255,255,0.12); -fx-padding: 16px; -fx-background-radius: 12px;">
-                    <Label fx:id="lblDialogue" text="&quot;Tekan tombol 'Mulai Panggilan' untuk menerima simulasi.&quot;"
-                           wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #ffffff; -fx-font-size: 15px; -fx-font-style: italic;" />
+                    <!-- Caller ID Profile -->
+                    <VBox alignment="CENTER" spacing="8" styleClass="phone-screen" VBox.vgrow="ALWAYS">
+                        <StackPane fx:id="avatarContainer" styleClass="phone-avatar">
+                            <Label fx:id="lblAvatarIcon" text="📞" style="-fx-font-size: 36px; -fx-text-fill: #ffffff;" />
+                        </StackPane>
+
+                        <Label fx:id="lblCallerName" text="Panggilan Masuk" styleClass="phone-caller-name" />
+                        <Label fx:id="lblCallerNumber" text="+62-812-XXXX-XXXX" styleClass="phone-caller-number" />
+
+                        <!-- Truecaller-style Scam Indicator Badge -->
+                        <HBox alignment="CENTER">
+                            <Label fx:id="lblSpamBadge" text="⚠️ Dilaporkan Komunitas: Potensi Penipuan (Spam OTP)" styleClass="phone-spam-badge" />
+                        </HBox>
+
+                        <HBox alignment="CENTER" spacing="8">
+                            <Label fx:id="lblCallStatus" text="Status: Menunggu Panggilan Dimulai..." styleClass="phone-status" />
+                            <Label fx:id="lblCallTimer" text="00:00" styleClass="phone-timer" />
+                        </HBox>
+
+                        <!-- Caller Dialogue Transcription Box -->
+                        <VBox alignment="CENTER" maxWidth="500" style="-fx-background-color: rgba(255,255,255,0.08); -fx-padding: 14px; -fx-background-radius: 12px; -fx-border-color: rgba(255,255,255,0.15); -fx-border-radius: 12px;">
+                            <HBox alignment="CENTER_LEFT" spacing="6">
+                                <Label text="🎙️ Suara Penelepon:" style="-fx-font-size: 11px; -fx-text-fill: #38bdf8; -fx-font-weight: bold;" />
+                            </HBox>
+                            <Label fx:id="lblDialogue" text="&quot;Tekan tombol 'Mulai Panggilan' di sebelah kiri untuk menerima panggilan simulasi.&quot;"
+                                   wrapText="true" textAlignment="CENTER" style="-fx-text-fill: #f8fafc; -fx-font-size: 14px; -fx-font-style: italic; -fx-padding: 6 0 0 0;" />
+                        </VBox>
+
+                        <Region VBox.vgrow="ALWAYS" />
+
+                        <!-- Phone Control Actions (Answer / Hang up) -->
+                        <HBox alignment="CENTER" spacing="32" style="-fx-padding: 8px 0 4px 0;">
+                            <VBox alignment="CENTER" spacing="4">
+                                <Button fx:id="btnAnswer" onAction="#handleAnswerCall" styleClass="call-btn-circle-accept">
+                                    <graphic><Label text="📞" style="-fx-font-size: 22px; -fx-text-fill: white;" /></graphic>
+                                </Button>
+                                <Label text="Angkat" style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;" />
+                            </VBox>
+
+                            <VBox alignment="CENTER" spacing="4">
+                                <Button fx:id="btnHangup" onAction="#handleTutupPanggilan" styleClass="call-btn-circle-hangup">
+                                    <graphic><Label text="❌" style="-fx-font-size: 20px; -fx-text-fill: white;" /></graphic>
+                                </Button>
+                                <Label text="Tutup / Tolak" style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
                 </VBox>
-            </VBox>
 
-            <!-- Feedback Info -->
+                <!-- Interactive Phone Keypad Dialer Panel -->
+                <VBox spacing="10" prefWidth="250" styleClass="dialer-box">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="⌨️ Keypad Dialer" style="-fx-text-fill: #f8fafc; -fx-font-weight: bold; -fx-font-size: 13px;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnBackspace" text="⌫" onAction="#handleDialerBackspace" style="-fx-background-color: #334155; -fx-text-fill: #f8fafc; -fx-cursor: hand;" />
+                    </HBox>
+
+                    <!-- Keypad Display -->
+                    <Label fx:id="lblDialerDisplay" text="" styleClass="dialer-display" maxWidth="Infinity" />
+
+                    <!-- 3x4 Keypad Grid -->
+                    <GridPane hgap="10" vgap="10" alignment="CENTER">
+                        <Button text="1" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button text="2" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button text="3" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                        <Button text="4" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button text="5" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button text="6" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                        <Button text="7" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button text="8" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button text="9" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                        <Button text="*" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button text="0" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button text="#" onAction="#handleDialerKey" styleClass="dialer-key" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    </GridPane>
+
+                    <Button fx:id="btnPanggilNomor" text="Dial / Kirim DTMF" onAction="#handleDialEnteredNumber" maxWidth="Infinity" styleClass="btn-success" />
+                </VBox>
+            </HBox>
+
+            <!-- Feedback & Consequences Info -->
             <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
-                  style="-fx-background-color: #fef3c7; -fx-border-color: #fde68a; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 12px;">
-                <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-text-fill: #92400e;" />
-                <Label fx:id="lblFeedbackDetail" text="Penjelasan..." wrapText="true" style="-fx-text-fill: #78350f;" />
+                  style="-fx-padding: 12px; -fx-background-radius: 8px; -fx-border-radius: 8px;">
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label fx:id="lblFeedbackIcon" text="💡" style="-fx-font-size: 16px;" />
+                    <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons Suara" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                </HBox>
+                <Label fx:id="lblFeedbackDetail" text="Penjelasan..." wrapText="true" />
             </VBox>
 
-            <!-- Response Options -->
-            <VBox fx:id="choiceContainer" spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
-                <Label text="Pilih Cara Anda Menjawab Telepon:" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+            <!-- Speech Response Options -->
+            <VBox fx:id="choiceContainer" spacing="8" styleClass="card">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="🗣️ Pilih Cara Anda Berbicara / Menjawab Penelepon:" style="-fx-font-weight: bold; -fx-text-fill: #1e293b;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label text="Tekan opsi respons di bawah:" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                </HBox>
                 <VBox fx:id="choiceButtonsBox" spacing="8">
                     <!-- Button responses dynamically injected -->
                 </VBox>
