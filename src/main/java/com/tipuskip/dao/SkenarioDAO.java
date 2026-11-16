@@ -11,4 +11,5 @@ public interface SkenarioDAO extends GenericDAO<Skenario, Integer> {
     List<Skenario> findByKategori(String kategori);
     Optional<Skenario> findWithFullStepsById(int id);
     List<Skenario> findAllActive();
+    boolean toggleStatus(int id, boolean statusAktif);
 }

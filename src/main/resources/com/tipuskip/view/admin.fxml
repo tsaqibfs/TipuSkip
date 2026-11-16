@@ -12,7 +12,7 @@
 
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
-        <!-- Tab 1: Kelola Skenario -->
+        <!-- Tab 1: Kelola Skenario (FR-12) -->
         <Tab text="Kelola Skenario">
             <VBox spacing="12" style="-fx-padding: 16px;">
                 <HBox spacing="16">
@@ -31,25 +31,30 @@
                         </TableView>
                         <HBox spacing="8">
                             <Button text="🗑 Hapus Skenario" onAction="#handleHapusSkenario" styleClass="btn-danger" />
+                            <Button text="⚡ Ubah Status Aktif" onAction="#handleToggleStatusSkenario" styleClass="btn-secondary" />
                             <Button text="🔄 Refresh" onAction="#muatDataSkenario" styleClass="btn-secondary" />
                         </HBox>
                     </VBox>
 
-                    <!-- Right: Form Tambah Skenario Baru -->
+                    <!-- Right: Form Tambah/Ubah Skenario -->
                     <VBox spacing="10" prefWidth="350" styleClass="card">
-                        <Label text="Tambah Skenario Baru" styleClass="card-title" />
+                        <Label fx:id="lblFormSkenario" text="Kelola Skenario (Tambah / Ubah)" styleClass="card-title" />
                         <TextField fx:id="txtSkJudul" promptText="Judul Skenario" />
                         <TextArea fx:id="txtSkDeskripsi" promptText="Deskripsi Skenario" prefHeight="60" wrapText="true" />
                         <ComboBox fx:id="cbSkJenis" promptText="Jenis (PESAN / TELEPON)" maxWidth="Infinity" />
                         <TextField fx:id="txtSkKategori" promptText="Kategori (e.g. Lowongan Kerja)" />
                         <ComboBox fx:id="cbSkTingkat" promptText="Tingkat Kesulitan" maxWidth="Infinity" />
-                        <Button text="💾 Simpan Skenario" onAction="#handleTambahSkenario" maxWidth="Infinity" styleClass="btn-primary" />
+                        <HBox spacing="8">
+                            <Button text="💾 Simpan Baru" onAction="#handleTambahSkenario" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-primary" />
+                            <Button text="✏️ Perbarui" onAction="#handleUbahSkenario" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-secondary" />
+                        </HBox>
+                        <Button text="❌ Bersihkan Form" onAction="#handleResetFormSkenario" maxWidth="Infinity" styleClass="btn-secondary" />
                     </VBox>
                 </HBox>
             </VBox>
         </Tab>
 
-        <!-- Tab 2: Kelola Indikator Penipuan -->
+        <!-- Tab 2: Kelola Indikator Penipuan (FR-13) -->
         <Tab text="Kelola Indikator Penipuan">
             <VBox spacing="12" style="-fx-padding: 16px;">
                 <HBox spacing="16">
@@ -68,20 +73,25 @@
                         </TableView>
                         <HBox spacing="8">
                             <Button text="🗑 Hapus Indikator" onAction="#handleHapusIndikator" styleClass="btn-danger" />
+                            <Button text="⚡ Ubah Status Aktif" onAction="#handleToggleStatusIndikator" styleClass="btn-secondary" />
                             <Button text="🔄 Refresh" onAction="#muatDataIndikator" styleClass="btn-secondary" />
                         </HBox>
                     </VBox>
 
-                    <!-- Right: Form Tambah Indikator Baru -->
+                    <!-- Right: Form Tambah/Ubah Indikator Baru -->
                     <VBox spacing="10" prefWidth="350" styleClass="card">
-                        <Label text="Tambah Indikator Baru" styleClass="card-title" />
+                        <Label fx:id="lblFormIndikator" text="Kelola Indikator (Tambah / Ubah)" styleClass="card-title" />
                         <TextField fx:id="txtIndNama" promptText="Nama Indikator" />
                         <TextField fx:id="txtIndPola" promptText="Pola Regex / Kata Kunci" />
                         <ComboBox fx:id="cbIndTipe" promptText="Tipe (KEYWORD / REGEX)" maxWidth="Infinity" />
                         <Spinner fx:id="spnIndBobot" editable="true" maxWidth="Infinity" />
                         <TextArea fx:id="txtIndDeskripsi" promptText="Deskripsi Analisis" prefHeight="50" wrapText="true" />
                         <TextArea fx:id="txtIndSaran" promptText="Saran Verifikasi Aman" prefHeight="50" wrapText="true" />
-                        <Button text="💾 Simpan Indikator" onAction="#handleTambahIndikator" maxWidth="Infinity" styleClass="btn-primary" />
+                        <HBox spacing="8">
+                            <Button text="💾 Simpan Baru" onAction="#handleTambahIndikator" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-primary" />
+                            <Button text="✏️ Perbarui" onAction="#handleUbahIndikator" HBox.hgrow="ALWAYS" maxWidth="Infinity" styleClass="btn-secondary" />
+                        </HBox>
+                        <Button text="❌ Bersihkan Form" onAction="#handleResetFormIndikator" maxWidth="Infinity" styleClass="btn-secondary" />
                     </VBox>
                 </HBox>
             </VBox>

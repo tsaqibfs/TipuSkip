@@ -48,6 +48,11 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
+    public boolean ubahStatusAktifSkenario(int skenarioId, boolean statusAktif) {
+        return skenarioDAO.toggleStatus(skenarioId, statusAktif);
+    }
+
+    @Override
     public List<IndikatorPenipuan> getAllIndikator() {
         return indikatorDAO.findAll();
     }
