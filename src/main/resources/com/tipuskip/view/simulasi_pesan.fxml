@@ -96,10 +96,10 @@
 
             <!-- User Response Choices Container -->
             <VBox fx:id="responsesContainer" spacing="8" styleClass="card">
-                <HBox alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="8">
                     <Label text="💬 Tentukan Balasan Respons Anda:" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label text="Pilih opsi yang paling aman dan logis" style="-fx-font-size: 11px; -fx-text-fill: #64748b;" />
+                    <Button fx:id="btnKirimVideo" text="🎥 Kirim Bukti Video" onAction="#handleKirimVideoAction" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 4 10;" />
                 </HBox>
                 <VBox fx:id="choiceButtonsBox" spacing="8">
                     <!-- Dynamic choice buttons inserted here -->

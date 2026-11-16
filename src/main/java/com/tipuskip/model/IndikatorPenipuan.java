@@ -25,6 +25,12 @@ public class IndikatorPenipuan {
 
     public IndikatorPenipuan(int id, String namaIndikator, String polaPencocokan,
                              TipePencocokan tipePencocokan, int bobotRisiko,
+                             String deskripsi, String saranVerifikasi) {
+        this(id, namaIndikator, polaPencocokan, tipePencocokan, bobotRisiko, deskripsi, saranVerifikasi, true);
+    }
+
+    public IndikatorPenipuan(int id, String namaIndikator, String polaPencocokan,
+                             TipePencocokan tipePencocokan, int bobotRisiko,
                              String deskripsi, String saranVerifikasi, boolean statusAktif) {
         this.id = id;
         this.namaIndikator = namaIndikator;
