@@ -471,3 +471,73 @@
     -fx-background-color: #334155;
     -fx-text-fill: #38bdf8;
 }
+
+/* =========================================================================
+   Video Simulation & Media Player UI (Chat Video Feature)
+   ========================================================================= */
+.video-preview-card {
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 10px;
+    -fx-border-color: #334155;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-spacing: 8px;
+    -fx-min-width: 260px;
+    -fx-max-width: 360px;
+}
+
+.video-screen-mock {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 8px;
+    -fx-min-height: 120px;
+    -fx-alignment: CENTER;
+    -fx-border-color: #475569;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.video-screen-mock:hover {
+    -fx-background-color: #334155;
+    -fx-border-color: #38bdf8;
+}
+
+.video-play-circle {
+    -fx-background-color: rgba(37, 99, 235, 0.9);
+    -fx-background-radius: 40px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+    -fx-max-width: 44px;
+    -fx-max-height: 44px;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 2);
+}
+
+.video-tag-duration {
+    -fx-background-color: rgba(0, 0, 0, 0.7);
+    -fx-text-fill: #f8fafc;
+    -fx-padding: 2px 6px;
+    -fx-background-radius: 4px;
+    -fx-font-size: 10px;
+    -fx-font-family: 'Consolas', monospace;
+}
+
+.video-file-info {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.btn-watch-video {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.btn-watch-video:hover {
+    -fx-background-color: #1d4ed8;
+}
+

@@ -40,7 +40,7 @@ public class MockSimulasiService implements ISimulasiService {
                 "Cukup baik, tetapi penipu seringkali menyiapkan web fiktif/kloningan.", "Penipu akan mencoba memberikan link profil perusahaan palsu.", 2));
 
         LangkahSkenario s1_l2 = new LangkahSkenario(2, 1, 2, "Recruiter Sarah (PT Digital Mandiri)",
-                "Bagus sekali! Ini link tugas pertamanya: https://s.id/job-like-yt-bonus. Silakan screenshot setelah Like dan kirimkan ke kami ya. Setelah itu kami masukkan ke grup Telegram untuk pencairan bonus.", "TEXT");
+                "Bagus sekali! Tonton video panduan tugas berikut: [Video_Tutorial_Tugas_Freelance.mp4] dan buka link tugas https://s.id/job-like-yt-bonus. Silakan tonton dan kirimkan bukti video like ya!", "TEXT");
         s1_l2.tambahPilihanRespons(new PilihanRespons(4, 2, "Maaf, saya tidak membuka tautan singkat (shortlink) dari kontak tidak dikenal.", TingkatRisiko.AMAN, 100,
                 "Tindakan tepat! Shortlink seperti s.id atau bit.ly sering menyembunyikan phishing atau malware.", "Anda terhindar dari unduhan berbahaya dan pencurian kredensial akun.", 3));
         s1_l2.tambahPilihanRespons(new PilihanRespons(5, 2, "Oke saya klik linknya dan saya like videonya sekarang ya kak.", TingkatRisiko.BAHAYA, 0,
@@ -185,6 +185,33 @@ public class MockSimulasiService implements ISimulasiService {
 
         s7.tambahLangkah(s7_l1);
         mockSkenarioList.add(s7);
+
+        // =========================================================================
+        // SKENARIO PESAN 8: Review & Like Cuplikan Video Trailer Film (Video Task Scam)
+        // =========================================================================
+        Skenario s8 = new Skenario(8, "Review & Like Cuplikan Video Trailer Film (Task Scam)",
+                "Penipu mengirim berkas video trailer promosi dan menjanjikan imbalan setelah like/review, sebelum meminta deposit anggota VIP.",
+                JenisSkenario.PESAN, "Video Task Scam", TingkatKesulitan.SEDANG, true);
+
+        LangkahSkenario s8_l1 = new LangkahSkenario(13, 8, 1, "Promotor Cinema Studio - Cynthia",
+                "Halo! Kami sedang mengadakan survey penonton film terbaru. Tonton cuplikan video berikut: [Video_Trailer_Promo_Film2026.mp4]. Cukup tonton dan like untuk komisi awal Rp50.000!", "VIDEO");
+        s8_l1.tambahPilihanRespons(new PilihanRespons(27, 13, "Saya tolak. Tawaran komisi hanya dengan menonton video singkat adalah indikasi penipuan skema piramida / task scam.", TingkatRisiko.AMAN, 100,
+                "Luar biasa kritis! Anda berhasil mengenali pola video task scam sejak awal.", "Anda terhindar dari jeratan deposit promosi fiktif.", null));
+        s8_l1.tambahPilihanRespons(new PilihanRespons(28, 13, "Asyik banget! Saya sudah tonton videonya, bagaimana cara kirim bukti rekaman layar dan klaim uangnya kak?", TingkatRisiko.BAHAYA, 0,
+                "Waspada! Penipu menggunakan umpan video menarik agar korban merasa tugasnya legal dan nyata.", "Penipu bersiap meminta Anda mengirim video/deposit dana.", 2));
+        s8_l1.tambahPilihanRespons(new PilihanRespons(29, 13, "Apakah ada kontrak kerja sama resmi dari pihak rumah produksi film?", TingkatRisiko.WASPADA, 70,
+                "Bagus bersikap skeptis, namun penipu biasanya sudah menyiapkan sertifikat fiktif.", "Penipu mencoba meyakinkan dengan dokumen palsu.", 2));
+
+        LangkahSkenario s8_l2 = new LangkahSkenario(14, 8, 2, "Promotor Cinema Studio - Cynthia",
+                "Keren banget! Bonus Rp50.000 sudah masuk saldo dompet virtual Anda. Untuk misi video tahap 2 berhadiah Rp2.000.000, silakan transfer deposit jaminan Rp250.000 sekarang!", "TEXT");
+        s8_l2.tambahPilihanRespons(new PilihanRespons(30, 14, "Pekerjaan resmi tidak pernah memungut deposit uang dari pekerjanya! Saya blokir nomor ini.", TingkatRisiko.AMAN, 100,
+                "Sempurna! Anda berhasil menyelamatkan keuangan Anda dari jebakan deposit.", "Uang Anda aman dan penipu gagal.", null));
+        s8_l2.tambahPilihanRespons(new PilihanRespons(31, 14, "Baik saya transfer Rp250.000 sekarang juga agar bisa lanjut misi video.", TingkatRisiko.BAHAYA, 0,
+                "FATAL! Saldo deposit Anda akan langsung hilang dibawa kabur penipu.", "Kerugian finansial nyata.", null));
+
+        s8.tambahLangkah(s8_l1);
+        s8.tambahLangkah(s8_l2);
+        mockSkenarioList.add(s8);
     }
 
     @Override
