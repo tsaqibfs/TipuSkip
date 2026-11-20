@@ -58,6 +58,12 @@ set ERROR_CODE=0
 @setlocal
 
 @REM ==== START VALIDATION ====
+if "%JAVA_HOME%" == "" (
+  for /d %%i in ("%ProgramFiles%\Java\jdk*") do set "JAVA_HOME=%%i"
+)
+if "%JAVA_HOME%" == "" (
+  for /d %%i in ("%ProgramFiles%\Eclipse Adoptium\jdk*") do set "JAVA_HOME=%%i"
+)
 if not "%JAVA_HOME%" == "" goto OkJHome
 
 echo.
