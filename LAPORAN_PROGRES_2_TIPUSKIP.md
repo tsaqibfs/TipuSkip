@@ -48,9 +48,19 @@ Pada **Progres ke-2**, pengerjaan sistem secara menyeluruh telah mencapai **92% 
 
 ---
 
-## 2. Rincian Hasil Implementasi Fitur Baru (Fokus Progres 2)
+## 2. Rincian Hasil Implementasi Fitur Baru & Bukti Screenshot (Fokus Progres 2)
 
-### 2.1. Custom Integrated Title Bar (Bebas Bingkai Bawaan OS)
+### 2.1. Integrasi Basis Data MySQL & Penyimpanan Data Dinamis
+Pada Progres ke-2, basis data MySQL telah terhubung penuh ke antarmuka aplikasi menggunakan arsitektur JDBC Singleton dan Generic DAO Pattern. Seluruh entitas (pengguna, skenario, langkah percakapan, pilihan balasan, riwayat evaluasi, dan indikator penipuan) telah tersimpan secara persisten di database.
+
+> 📷 **[TEMPATKAN SCREENSHOT DATABASE DI SINI]**
+> *(Sisipkan tangkapan layar antarmuka phpMyAdmin / MySQL Workbench / DBeaver yang menampilkan struktur relasi tabel database TipuSkip atau isi data dari tabel `skenario`, `langkah_skenario`, dan `hasil_simulasi`).*
+> 
+> **Gambar 2.1**: Struktur Skema Relasional dan Bukti Data Tabel Basis Data MySQL TipuSkip.
+
+---
+
+### 2.2. Custom Integrated Title Bar (Bebas Bingkai Bawaan OS)
 Untuk menghadirkan estetika aplikasi modern setara perangkat lunak profesional (seperti Spotify, Discord, atau VS Code), jendela aplikasi tidak lagi menggunakan bingkai abu-abu kaku bawaan sistem operasi Windows.
 * **Mekanisme PBO**: Menggunakan `primaryStage.initStyle(StageStyle.UNDECORATED)` pada `MainApp.java`.
 * **Integrated Header Bar**: Area judul atas menyatu langsung dengan bodi utama dengan palet warna `#0b1120`, memuat logo TipuSkip, identitas versi, serta *pill badge* keamanan.
@@ -63,15 +73,12 @@ Untuk menghadirkan estetika aplikasi modern setara perangkat lunak profesional (
   * *Double-click* pada title bar akan otomatis memaksimalkan/memulihkan ukuran jendela.
   * Dibuatkan utility [`WindowResizeHelper.java`](file:///C:/Users/SFI%20PC/.gemini/antigravity/scratch/TipuSkip/src/main/java/com/tipuskip/util/WindowResizeHelper.java) yang mendeteksi kursor di tepi dan sudut jendela sehingga jendela tetap dapat ditarik (*resize*) dari segala arah.
 
-### 2.2. Sistem Tata Letak Responsif & Adaptif (*Screen-Aware Responsive Layout*)
-Pada pengujian di berbagai perangkat laptop anggota tim (khususnya monitor resolusi 1366×768 atau layar 1080p dengan skala DPI Windows 125%/150%), ukuran jendela sebelumnya terlihat kebesaran dan terpotong oleh taskbar.
-* **Perbaikan**: `MainApp.java` kini membaca area kerja layar pengguna secara otomatis melalui:
-  ```java
-  Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-  ```
-* Ukuran awal disesuaikan secara proporsional pada **`980 x 620 px`** (atau ~80–84% dari tinggi layar bebas taskbar).
-* Ditambahkan `primaryStage.centerOnScreen()` sehingga aplikasi selalu terbuka **tepat di tengah layar secara simetris**.
-* Seluruh padding vertikal navbar, kartu skenario, dan tombol respons dipadatkan (*compact layout*) agar seluruh percakapan dan opsi respon langsung terlihat tanpa perlu digeser manual.
+> 📷 **[TEMPATKAN SCREENSHOT CUSTOM TITLE BAR & JENDELA UTAMA DI SINI]**
+> *(Sisipkan tangkapan layar jendela utama aplikasi yang memperlihatkan Title Bar terintegrasi menyatu dengan tombol minimize, maximize, dan close kustom).*
+> 
+> **Gambar 2.2**: Tampilan Antarmuka Aplikasi Desktop TipuSkip dengan Custom Integrated Title Bar & Tata Letak Responsif.
+
+---
 
 ### 2.3. Multi-Platform Theme Engine pada Simulasi Pesan
 Fitur ini dirancang karena modus kejahatan siber saat ini tidak hanya terjadi di WhatsApp, melainkan tersebar luas di berbagai media sosial populer. Disediakan menu *dropdown* pemilih platform secara *real-time*:
@@ -89,10 +96,28 @@ Fitur ini dirancang karena modus kejahatan siber saat ini tidak hanya terjadi di
    * Nuansa *cyber dark* (`#000000`), status pengikut 1.2M, dan tombol audio call.
    * Balon pengirim memiliki garis aksen neon cyan (`#25f4ee`) dan balasan pengguna berwarna merah-pink khas TikTok (`#fe2c55`).
 
-> [!NOTE]
-> **Dinamis Tanpa Reset**: Jika pengguna mengganti platform di tengah percakapan simulasi, seluruh riwayat pesan yang telah tampil akan langsung dirender ulang (*re-render*) secara instan ke gaya platform yang baru dipilih menggunakan mekanisme `renderUlangSemuaPesan()`.
+> 📷 **[TEMPATKAN SCREENSHOT PERBANDINGAN TEMA MEDIA SOSIAL DI SINI]**
+> *(Sisipkan tangkapan layar simulasi pesan saat menggunakan tema Instagram DM / TikTok / Messenger yang memperlihatkan balon gradien dan reaksi emoji).*
+> 
+> **Gambar 2.3**: Implementasi Multi-Platform Theme Engine pada Simulasi Pesan (Mode Instagram DM & TikTok).
 
-### 2.4. Multi-Platform Calling Screen pada Simulasi Telepon & Dialer
+---
+
+### 2.4. Fitur Pengiriman & Pemutar Video Interaktif (*Video Task Scam Simulation*)
+Untuk mengedukasi modus penipuan berkedok pekerjaan paruh waktu (*freelance task scam* like video) dan pemerasan video identitas (*biometrik selfie* KTP):
+1. Pengguna dapat menekan tombol **"🎥 Kirim Bukti Video"** untuk memilih rekaman yang akan dikirim ke penipu:
+   * *Opsi Aman/Peringatan*: Mengirimkan rekaman bukti like video YouTube (sistem memberi umpan balik mengenai bahaya jebakan komisi awal).
+   * *Opsi Fatal*: Mengirimkan rekaman selfie wajah memegang KTP asli (sistem langsung memicu status skor **🚨 BERISIKO (10/100)** dan peringatan bahaya pembobolan pinjaman online ilegal).
+2. Disediakan **Modal Video Player Dialog** yang mensimulasikan pemutaran video cuplikan tugas resmi menggunakan animasi `Timeline` JavaFX, tombol kontrol *Play/Pause/Restart*, progress bar durasi, serta analisis edukatif di bagian bawah.
+
+> 📷 **[TEMPATKAN SCREENSHOT FITUR VIDEO & PEMUTAR VIDEO DI SINI]**
+> *(Sisipkan tangkapan layar saat dialog pemutar video terbuka di atas obrolan simulasi).*
+> 
+> **Gambar 2.4**: Fitur Pengiriman Video Tugas dan Modal Pemutar Video Interaktif (*Video Task Player*).
+
+---
+
+### 2.5. Multi-Platform Calling Screen pada Simulasi Telepon & Smart Keypad Dialer
 Simulasi panggilan telepon suara kini juga dilengkapi pemilih tema platform panggilan masuk:
 * **📱 Telepon Seluler (GSM / Truecaller)**: Antarmuka smartphone dengan peringatan spam komunitas (*Truecaller-style scam warning*).
 * **🟢 Panggilan Suara WhatsApp**: Antarmuka panggilan suara WhatsApp lengkap dengan wallpaper hijau tua dan status enkripsi.
@@ -100,12 +125,10 @@ Simulasi panggilan telepon suara kini juga dilengkapi pemilih tema platform pang
 * **💬 Panggilan Suara Messenger**: Layar panggilan bernuansa gradien biru Messenger.
 * **🎵 Panggilan Langsung TikTok**: Layar panggilan audio TikTok Live.
 
-### 2.5. Fitur Pengiriman & Pemutar Video Interaktif (*Video Task Scam Simulation*)
-Untuk mengedukasi modus penipuan berkedok pekerjaan paruh waktu (*freelance task scam* like video) dan pemerasan video identitas (*biometrik selfie* KTP):
-1. Pengguna dapat menekan tombol **"🎥 Kirim Bukti Video"** untuk memilih rekaman yang akan dikirim ke penipu:
-   * *Opsi Aman/Peringatan*: Mengirimkan rekaman bukti like video YouTube (sistem memberi umpan balik mengenai bahaya jebakan komisi awal).
-   * *Opsi Fatal*: Mengirimkan rekaman selfie wajah memegang KTP asli (sistem langsung memicu status skor **🚨 BERISIKO (10/100)** dan peringatan bahaya pembobolan pinjaman online ilegal).
-2. Disediakan **Modal Video Player Dialog** yang mensimulasikan pemutaran video cuplikan tugas resmi menggunakan animasi `Timeline` JavaFX, tombol kontrol *Play/Pause/Restart*, progress bar durasi, serta analisis edukatif di bagian bawah.
+> 📷 **[TEMPATKAN SCREENSHOT SIMULASI TELEPON DI SINI]**
+> *(Sisipkan tangkapan layar antarmuka panggilan masuk dengan badge peringatan penipuan dan keypad dialer DTMF).*
+> 
+> **Gambar 2.5**: Tampilan Simulasi Panggilan Telepon Suara Multi-Platform dan Keypad Dialer Interaktif.
 
 ### 2.6. Perluasan 8 Skenario Lengkap Berbasis Pohon Keputusan (*Decision Tree*)
 Tidak lagi hanya 1 skenario, sistem kini memuat 8 skenario komprehensif:
