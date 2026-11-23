@@ -12,27 +12,81 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Controller untuk Simulasi Panggilan Telepon (Voice Call & Keypad Dialer).
+ * Controller untuk Simulasi Telepon Interaktif (Smartphone UI & Interactive Dialer)
+ * dengan dukungan Tema Multi-Platform (GSM/Truecaller, WhatsApp Call, Instagram Audio, Messenger, TikTok).
  * Menerapkan prinsip PBO (Polimorfisme Simulasi, Enkapsulasi Model).
  * Bagian Tanggung Jawab Anggota 1.
  */
 public class SimulasiTeleponController {
 
+    public enum PhoneTheme {
+        GSM("📱 Telepon Seluler (GSM / Truecaller)", "phone-theme-gsm", "📶 5G • GSM", "📞",
+                "⚠️ Dilaporkan Komunitas: Potensi Penipuan (Spam OTP)", "Panggilan Seluler Masuk"),
+        WHATSAPP("🟢 Panggilan Suara WhatsApp", "phone-theme-whatsapp", "📶 WiFi • WhatsApp Call", "🟢",
+                "⚠️ WhatsApp Trust: Panggilan dari Nomor Bisnis Mencurigakan", "Panggilan Suara WhatsApp"),
+        INSTAGRAM("📸 Panggilan Audio Instagram", "phone-theme-instagram", "📶 WiFi • Instagram Direct", "📸",
+                "⚠️ Instagram Safety: Permintaan Panggilan Akun Tak Dikenal", "Instagram Audio Call"),
+        MESSENGER("💬 Panggilan Suara Messenger", "phone-theme-messenger", "📶 5G • Messenger Call", "💬",
+                "⚠️ Messenger Security: Kontak Belum Pernah Berinteraksi", "Panggilan Suara Messenger"),
+        TIKTOK("🎵 Panggilan Langsung TikTok", "phone-theme-tiktok", "📶 5G • TikTok Live Audio", "🎵",
+                "⚠️ TikTok Anti-Scam: Pengguna Terindikasi Penipuan Tugas", "Panggilan Langsung TikTok");
+
+        private final String label;
+        private final String cssClass;
+        private final String networkStatus;
+        private final String avatarIcon;
+        private final String spamBadgeText;
+        private final String callTitle;
+
+        PhoneTheme(String label, String cssClass, String networkStatus, String avatarIcon, String spamBadgeText, String callTitle) {
+            this.label = label;
+            this.cssClass = cssClass;
+            this.networkStatus = networkStatus;
+            this.avatarIcon = avatarIcon;
+            this.spamBadgeText = spamBadgeText;
+            this.callTitle = callTitle;
+        }
+
+        public String getLabel() { return label; }
+        public String getCssClass() { return cssClass; }
+        public String getNetworkStatus() { return networkStatus; }
+        public String getAvatarIcon() { return avatarIcon; }
+        public String getSpamBadgeText() { return spamBadgeText; }
+        public String getCallTitle() { return callTitle; }
+
+        public static PhoneTheme fromLabel(String label) {
+            for (PhoneTheme theme : values()) {
+                if (theme.label.equals(label)) return theme;
+            }
+            return GSM;
+        }
+    }
+
+    @FXML private ComboBox<String> cbPhonePlatform;
     @FXML private ComboBox<Skenario> cbSkenario;
     @FXML private Label lblKategori;
     @FXML private Label lblKesulitan;
     @FXML private Label lblDeskripsi;
     @FXML private Label lblSkorLive;
     @FXML private Label lblSkorStatus;
+
+    @FXML private VBox phoneContainer;
+    @FXML private VBox phoneScreen;
+    @FXML private Label lblPhoneClock;
+    @FXML private Label lblPhoneNetwork;
 
     @FXML private StackPane avatarContainer;
     @FXML private Label lblAvatarIcon;
@@ -60,6 +114,7 @@ public class SimulasiTeleponController {
 
     private ISimulasiService simulasiService;
     private Simulasi activeSimulasi;
+    private PhoneTheme currentPhoneTheme = PhoneTheme.GSM;
 
     // Call Duration Timer
     private Timeline callTimerTimeline;
@@ -70,6 +125,7 @@ public class SimulasiTeleponController {
     public void initialize() {
         simulasiService = ServiceFactory.getSimulasiService();
         muatDaftarSkenario();
+        inisialisasiPlatformSwitcher();
 
         cbSkenario.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -78,11 +134,70 @@ public class SimulasiTeleponController {
                 updateKesulitanBadge(newVal.getTingkatKesulitan());
                 lblDeskripsi.setText(newVal.getDeskripsi() != null ? newVal.getDeskripsi() : "");
                 lblCallerName.setText(newVal.getJudul());
-                lblCallStatus.setText("Status: Panggilan Siap Dijalankan");
+                lblCallStatus.setText("Status: Panggilan Siap Dijalankan (" + currentPhoneTheme.getCallTitle() + ")");
             }
         });
 
         initTimer();
+        updateClock();
+    }
+
+    private void inisialisasiPlatformSwitcher() {
+        if (cbPhonePlatform != null) {
+            for (PhoneTheme theme : PhoneTheme.values()) {
+                cbPhonePlatform.getItems().add(theme.getLabel());
+            }
+            cbPhonePlatform.getSelectionModel().selectFirst();
+            cbPhonePlatform.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null) {
+                    terapkanTemaPlatform(PhoneTheme.fromLabel(newVal));
+                }
+            });
+        }
+    }
+
+    private void terapkanTemaPlatform(PhoneTheme theme) {
+        this.currentPhoneTheme = theme;
+
+        if (phoneContainer != null) {
+            phoneContainer.getStyleClass().removeAll(
+                    "phone-theme-gsm", "phone-theme-whatsapp", "phone-theme-instagram", "phone-theme-messenger", "phone-theme-tiktok"
+            );
+            phoneContainer.getStyleClass().add(theme.getCssClass());
+        }
+
+        if (lblPhoneNetwork != null) {
+            lblPhoneNetwork.setText(theme.getNetworkStatus());
+        }
+
+        if (lblSpamBadge != null) {
+            lblSpamBadge.setText(theme.getSpamBadgeText());
+        }
+
+        if (avatarContainer != null) {
+            avatarContainer.getStyleClass().removeAll(
+                    "avatar-whatsapp", "avatar-instagram-ring", "avatar-messenger", "avatar-tiktok"
+            );
+            if (theme == PhoneTheme.INSTAGRAM) {
+                avatarContainer.getStyleClass().add("avatar-instagram-ring");
+            } else if (theme == PhoneTheme.MESSENGER) {
+                avatarContainer.getStyleClass().add("avatar-messenger");
+            } else if (theme == PhoneTheme.TIKTOK) {
+                avatarContainer.getStyleClass().add("avatar-tiktok");
+            } else if (theme == PhoneTheme.WHATSAPP) {
+                avatarContainer.getStyleClass().add("avatar-whatsapp");
+            }
+        }
+
+        if (!isCallActive && lblAvatarIcon != null) {
+            lblAvatarIcon.setText(theme.getAvatarIcon());
+        }
+    }
+
+    private void updateClock() {
+        if (lblPhoneClock != null) {
+            lblPhoneClock.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        }
     }
 
     private void initTimer() {
@@ -133,11 +248,10 @@ public class SimulasiTeleponController {
         btnMulaiPanggilan.setDisable(true);
         cbSkenario.setDisable(true);
 
-        // Simulasi status telepon berdering masuk
         isCallActive = false;
         callSecondsElapsed = 0;
         lblCallTimer.setText("00:00");
-        lblCallStatus.setText("Status: Panggilan Masuk Berdering... 📳");
+        lblCallStatus.setText("Status: " + currentPhoneTheme.getCallTitle() + " Berdering... 📳");
         avatarContainer.getStyleClass().add("phone-avatar-ringing");
         lblAvatarIcon.setText("📳");
 
@@ -164,7 +278,7 @@ public class SimulasiTeleponController {
 
         avatarContainer.getStyleClass().remove("phone-avatar-ringing");
         lblAvatarIcon.setText("🗣️");
-        lblCallStatus.setText("Status: Panggilan Terhubung");
+        lblCallStatus.setText("Status: Panggilan Terhubung (" + currentPhoneTheme.getCallTitle() + ")");
         btnAnswer.setDisable(true);
 
         tampilkanLangkahSaatIni();
@@ -222,7 +336,6 @@ public class SimulasiTeleponController {
 
         lblFeedbackDetail.setText(respons.getUmpanBalik() + "\nKonsekuensi: " + respons.getKonsekuensi());
 
-        // Jalankan alur langkah selanjutnya di objek SimulasiTelepon (Polimorfisme PBO)
         boolean lanjut = activeSimulasi.prosesRespons(respons);
         int skorSekarang = activeSimulasi.hitungSkor();
         lblSkorLive.setText(skorSekarang + " / 100");
@@ -257,7 +370,6 @@ public class SimulasiTeleponController {
         lblCallStatus.setText("Status: Panggilan Diakhiri / Ditolak");
 
         if (activeSimulasi != null && !activeSimulasi.isSelesai()) {
-            // Pengguna berinisiatif mematikan panggilan sebelum tertipu!
             selesaikanPanggilan();
         } else {
             btnMulaiPanggilan.setDisable(false);
@@ -273,7 +385,7 @@ public class SimulasiTeleponController {
         isCallActive = false;
 
         lblCallStatus.setText("Status: Panggilan Selesai");
-        lblAvatarIcon.setText("📞");
+        lblAvatarIcon.setText(currentPhoneTheme.getAvatarIcon());
         choiceButtonsBox.getChildren().clear();
         btnMulaiPanggilan.setDisable(false);
         cbSkenario.setDisable(false);
@@ -290,7 +402,7 @@ public class SimulasiTeleponController {
         }
 
         AlertHelper.showInfo("Simulasi Panggilan Selesai",
-                "Evaluasi Simulasi Telepon:\n\n" +
+                "Evaluasi Simulasi Telepon (" + currentPhoneTheme.getLabel() + "):\n\n" +
                 "Skor Akhir: " + skorAkhir + " (" + evaluasi + ")\n\n" + ringkasan);
     }
 
@@ -326,10 +438,8 @@ public class SimulasiTeleponController {
         }
 
         if (isCallActive) {
-            // Simulasi pengiriman nada DTMF saat panggilan aktif
             AlertHelper.showInfo("DTMF Keypad Terkirim", "Anda menekan nada keypad [" + number + "] ke sambungan telepon penipu.");
         } else {
-            // Simulasi panggilan mandiri ke call center
             if (number.equals("1500888") || number.equals("14000") || number.equals("1500017") || number.equals("110")) {
                 AlertHelper.showInfo("Panggilan Call Center Resmi",
                         "Anda mendial nomor resmi [" + number + "].\n" +

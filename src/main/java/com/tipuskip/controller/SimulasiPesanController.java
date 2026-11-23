@@ -15,27 +15,93 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Controller untuk Simulasi Pesan Interaktif (Chat WhatsApp/Telegram style).
+ * Controller untuk Simulasi Pesan Interaktif dengan Dukungan Multi-Platform Theme
+ * (WhatsApp Business, Instagram DM, Facebook Messenger, TikTok Direct Chat).
  * Menerapkan prinsip PBO (Polimorfisme Simulasi, Enkapsulasi Model).
  * Bagian Tanggung Jawab Anggota 1.
  */
 public class SimulasiPesanController {
 
+    public enum PlatformTheme {
+        WHATSAPP("🟢 WhatsApp Business", "theme-whatsapp", "Online • Enkripsi End-to-End", "WhatsApp Official 🛡️", "👤", false),
+        INSTAGRAM("📸 Instagram DM (Direct)", "theme-instagram", "Aktif sekarang • Pesan Langsung", "Instagram Verified 🛡️", "📸", true),
+        MESSENGER("💬 Facebook Messenger", "theme-messenger", "Aktif 5m lalu • Obrolan Resmi", "Messenger Verified 🛡️", "💬", true),
+        TIKTOK("🎵 TikTok Direct Chat", "theme-tiktok", "1.2M Pengikut • Akun Terverifikasi", "TikTok Safety Shield 🛡️", "🎵", true);
+
+        private final String label;
+        private final String cssClass;
+        private final String statusText;
+        private final String securityText;
+        private final String defaultAvatar;
+        private final boolean showVerified;
+
+        PlatformTheme(String label, String cssClass, String statusText, String securityText, String defaultAvatar, boolean showVerified) {
+            this.label = label;
+            this.cssClass = cssClass;
+            this.statusText = statusText;
+            this.securityText = securityText;
+            this.defaultAvatar = defaultAvatar;
+            this.showVerified = showVerified;
+        }
+
+        public String getLabel() { return label; }
+        public String getCssClass() { return cssClass; }
+        public String getStatusText() { return statusText; }
+        public String getSecurityText() { return securityText; }
+        public String getDefaultAvatar() { return defaultAvatar; }
+        public boolean isShowVerified() { return showVerified; }
+
+        public static PlatformTheme fromLabel(String label) {
+            for (PlatformTheme theme : values()) {
+                if (theme.label.equals(label)) return theme;
+            }
+            return WHATSAPP;
+        }
+    }
+
+    private static class ChatMessageItem {
+        boolean isPenipu;
+        String pengirim;
+        String teks;
+        LocalTime waktu;
+        boolean isVideo;
+        String videoJudul;
+        String videoDurasi;
+        String videoCaption;
+
+        ChatMessageItem(boolean isPenipu, String pengirim, String teks, LocalTime waktu) {
+            this.isPenipu = isPenipu;
+            this.pengirim = pengirim;
+            this.teks = teks;
+            this.waktu = waktu;
+            this.isVideo = false;
+        }
+
+        ChatMessageItem(String videoJudul, String videoDurasi, String videoCaption, LocalTime waktu) {
+            this.isPenipu = false;
+            this.pengirim = "Anda";
+            this.teks = videoCaption;
+            this.waktu = waktu;
+            this.isVideo = true;
+            this.videoJudul = videoJudul;
+            this.videoDurasi = videoDurasi;
+            this.videoCaption = videoCaption;
+        }
+    }
+
+    @FXML private ComboBox<String> cbPlatformTheme;
     @FXML private ComboBox<Skenario> cbSkenario;
     @FXML private Label lblKategori;
     @FXML private Label lblKesulitan;
@@ -44,9 +110,16 @@ public class SimulasiPesanController {
     @FXML private Label lblSkorLive;
     @FXML private Label lblSkorStatus;
 
+    @FXML private VBox chatWindow;
+    @FXML private HBox chatHeaderBox;
+    @FXML private StackPane avatarContainer;
     @FXML private Label lblAvatarText;
     @FXML private Label lblChatHeaderName;
     @FXML private Label lblChatHeaderStatus;
+    @FXML private Label lblVerifiedBadge;
+    @FXML private Label lblHeaderCallIcon;
+    @FXML private Label lblHeaderVideoIcon;
+    @FXML private Label lblHeaderSecurity;
 
     @FXML private ScrollPane chatScrollPane;
     @FXML private VBox chatBox;
@@ -64,12 +137,15 @@ public class SimulasiPesanController {
 
     private ISimulasiService simulasiService;
     private Simulasi activeSimulasi;
+    private PlatformTheme currentPlatform = PlatformTheme.WHATSAPP;
+    private final List<ChatMessageItem> daftarPesan = new ArrayList<>();
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     @FXML
     public void initialize() {
         simulasiService = ServiceFactory.getSimulasiService();
         muatDaftarSkenario();
+        inisialisasiPlatformSwitcher();
 
         cbSkenario.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -81,6 +157,62 @@ public class SimulasiPesanController {
                 lblChatHeaderStatus.setText("Kategori: " + newVal.getKategori() + " • Siap Dimulai");
             }
         });
+    }
+
+    private void inisialisasiPlatformSwitcher() {
+        if (cbPlatformTheme != null) {
+            for (PlatformTheme theme : PlatformTheme.values()) {
+                cbPlatformTheme.getItems().add(theme.getLabel());
+            }
+            cbPlatformTheme.getSelectionModel().selectFirst();
+            cbPlatformTheme.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal != null) {
+                    terapkanTemaPlatform(PlatformTheme.fromLabel(newVal));
+                }
+            });
+        }
+    }
+
+    private void terapkanTemaPlatform(PlatformTheme theme) {
+        this.currentPlatform = theme;
+
+        if (chatWindow != null) {
+            chatWindow.getStyleClass().removeAll(
+                    "theme-whatsapp", "theme-instagram", "theme-messenger", "theme-tiktok"
+            );
+            chatWindow.getStyleClass().add(theme.getCssClass());
+        }
+
+        if (lblHeaderSecurity != null) {
+            lblHeaderSecurity.setText(theme.getSecurityText());
+        }
+
+        if (lblVerifiedBadge != null) {
+            lblVerifiedBadge.setVisible(theme.isShowVerified());
+            lblVerifiedBadge.setManaged(theme.isShowVerified());
+        }
+
+        if (avatarContainer != null) {
+            avatarContainer.getStyleClass().removeAll(
+                    "avatar-whatsapp", "avatar-instagram-ring", "avatar-messenger", "avatar-tiktok"
+            );
+            if (theme == PlatformTheme.INSTAGRAM) {
+                avatarContainer.getStyleClass().add("avatar-instagram-ring");
+            } else if (theme == PlatformTheme.MESSENGER) {
+                avatarContainer.getStyleClass().add("avatar-messenger");
+            } else if (theme == PlatformTheme.TIKTOK) {
+                avatarContainer.getStyleClass().add("avatar-tiktok");
+            } else {
+                avatarContainer.getStyleClass().add("avatar-whatsapp");
+            }
+        }
+
+        if (activeSimulasi == null && lblAvatarText != null) {
+            lblAvatarText.setText(theme.getDefaultAvatar());
+        }
+
+        // Render ulang semua balon percakapan sesuai gaya platform baru
+        renderUlangSemuaPesan();
     }
 
     private void updateKesulitanBadge(TingkatKesulitan kesulitan) {
@@ -111,6 +243,7 @@ public class SimulasiPesanController {
         }
 
         activeSimulasi = simulasiService.inisialisasiSimulasi(selected.getId());
+        daftarPesan.clear();
         chatBox.getChildren().clear();
         choiceButtonsBox.getChildren().clear();
         feedbackBox.setVisible(false);
@@ -121,7 +254,7 @@ public class SimulasiPesanController {
         lblSkorStatus.setStyle("-fx-text-fill: #15803d; -fx-background-color: #dcfce7;");
 
         lblChatHeaderName.setText(selected.getJudul());
-        lblChatHeaderStatus.setText("Online • Simulasi Aktif");
+        lblChatHeaderStatus.setText(currentPlatform.getStatusText());
         lblAvatarText.setText("🚨");
 
         btnMulaiSimulasi.setDisable(true);
@@ -142,14 +275,11 @@ public class SimulasiPesanController {
             return;
         }
 
-        // Perbarui nomor langkah di UI
         int totalLangkah = activeSimulasi.getSkenario().getDaftarLangkah().size();
         lblProgressLangkah.setText("Langkah " + langkah.getNomorLangkah() + " dari " + totalLangkah);
 
-        // Tambahkan balon obrolan masuk dari penipu
         tambahBubbleMasuk(langkah.getNamaPengirim(), langkah.getPesanPengirim());
 
-        // Buat Tombol Pilihan Respons Pengguna
         choiceButtonsBox.getChildren().clear();
         List<PilihanRespons> pilihanList = langkah.getDaftarPilihanRespons();
         for (int i = 0; i < pilihanList.size(); i++) {
@@ -168,10 +298,8 @@ public class SimulasiPesanController {
     }
 
     private void handlePilihRespons(PilihanRespons respons) {
-        // Tampilkan bubble balasan pengguna
         tambahBubbleKeluar(respons.getTeksRespons());
 
-        // Update Feedback Banner
         feedbackBox.setVisible(true);
         feedbackBox.setManaged(true);
 
@@ -194,7 +322,6 @@ public class SimulasiPesanController {
 
         lblFeedbackDetail.setText(respons.getUmpanBalik() + "\nKonsekuensi: " + respons.getKonsekuensi());
 
-        // Jalankan alur langkah selanjutnya di objek Simulasi (Polimorfisme PBO)
         boolean lanjut = activeSimulasi.prosesRespons(respons);
         int skorSekarang = activeSimulasi.hitungSkor();
         lblSkorLive.setText(skorSekarang + " / 100");
@@ -227,7 +354,6 @@ public class SimulasiPesanController {
         String evaluasi = activeSimulasi != null ? activeSimulasi.evaluasiHasil() : "-";
         String ringkasan = activeSimulasi != null ? activeSimulasi.dapatkanRingkasanPembelajaran() : "";
 
-        // Simpan hasil ke riwayat via ISimulasiService
         if (activeSimulasi != null) {
             int userId = SessionManager.isLoggedIn() ? SessionManager.getCurrentUser().getId() : 1;
             HasilSimulasi hasil = activeSimulasi.buatHasilSimulasi(userId);
@@ -240,43 +366,95 @@ public class SimulasiPesanController {
     }
 
     private void tambahBubbleMasuk(String pengirim, String teks) {
+        ChatMessageItem item = new ChatMessageItem(true, pengirim, teks, LocalTime.now());
+        daftarPesan.add(item);
+        renderBubbleItem(item);
+    }
+
+    private void tambahBubbleKeluar(String teks) {
+        ChatMessageItem item = new ChatMessageItem(false, "Anda", teks, LocalTime.now());
+        daftarPesan.add(item);
+        renderBubbleItem(item);
+    }
+
+    private void renderUlangSemuaPesan() {
+        if (chatBox == null) return;
+        chatBox.getChildren().clear();
+        for (ChatMessageItem item : daftarPesan) {
+            renderBubbleItem(item);
+        }
+        scrollToBottom();
+    }
+
+    private void renderBubbleItem(ChatMessageItem item) {
+        if (item.isVideo) {
+            renderBubbleVideoKeluar(item);
+            return;
+        }
+
+        if (item.isPenipu) {
+            renderBubbleMasukTheme(item);
+        } else {
+            renderBubbleKeluarTheme(item);
+        }
+    }
+
+    private void renderBubbleMasukTheme(ChatMessageItem item) {
         VBox bubble = new VBox(4);
-        bubble.getStyleClass().add("bubble-incoming");
+
+        // Pilih class CSS berdasarkan platform aktif
+        String bubbleClass = "bubble-incoming";
+        String textFill = "#1e293b";
+        String senderClass = "bubble-sender";
+
+        if (currentPlatform == PlatformTheme.INSTAGRAM) {
+            bubbleClass = "bubble-instagram-in";
+            textFill = "#f4f4f5";
+            senderClass = "bubble-sender-instagram";
+        } else if (currentPlatform == PlatformTheme.MESSENGER) {
+            bubbleClass = "bubble-messenger-in";
+            textFill = "#050505";
+            senderClass = "bubble-sender-messenger";
+        } else if (currentPlatform == PlatformTheme.TIKTOK) {
+            bubbleClass = "bubble-tiktok-in";
+            textFill = "#ffffff";
+            senderClass = "bubble-sender-tiktok";
+        }
+        bubble.getStyleClass().add(bubbleClass);
 
         HBox topRow = new HBox(6);
-        Label senderLbl = new Label(pengirim);
-        senderLbl.getStyleClass().add("bubble-sender");
+        Label senderLbl = new Label(item.pengirim);
+        senderLbl.getStyleClass().add(senderClass);
         topRow.getChildren().add(senderLbl);
 
-        Label textLbl = new Label(teks);
+        Label textLbl = new Label(item.teks);
         textLbl.setWrapText(true);
-        textLbl.setStyle("-fx-text-fill: #1e293b; -fx-font-size: 13px;");
+        textLbl.setStyle("-fx-text-fill: " + textFill + "; -fx-font-size: 13px;");
 
         bubble.getChildren().addAll(topRow, textLbl);
 
-        // Jika teks mengandung file APK, tautan, atau video simulasi
-        if (teks.contains(".apk") || teks.contains(".APK")) {
+        // Preview khusus APK, Video, Link
+        if (item.teks.contains(".apk") || item.teks.contains(".APK")) {
             HBox attachmentBox = new HBox(8);
             attachmentBox.setAlignment(Pos.CENTER_LEFT);
             attachmentBox.getStyleClass().add("attachment-preview-box");
             Label attIcon = new Label("📦");
             attIcon.setStyle("-fx-font-size: 16px;");
             VBox attDetails = new VBox(2);
-            Label attName = new Label("Berkas APK Terdeteksi (Potensi Malware Sniffer)");
+            Label attName = new Label("Berkas APK Terdeteksi (Sniffer/Malware)");
             attName.setStyle("-fx-font-weight: bold; -fx-text-fill: #b91c1c; -fx-font-size: 11px;");
             Label attWarning = new Label("Jangan pasang aplikasi di luar Google Play Store!");
             attWarning.setStyle("-fx-font-size: 10px; -fx-text-fill: #64748b;");
             attDetails.getChildren().addAll(attName, attWarning);
             attachmentBox.getChildren().addAll(attIcon, attDetails);
             bubble.getChildren().add(attachmentBox);
-        } else if (teks.contains(".mp4") || teks.contains(".MP4") || teks.toLowerCase().contains("[video]")) {
-            // Video Task Scam Preview Card
+        } else if (item.teks.contains(".mp4") || item.teks.contains(".MP4") || item.teks.toLowerCase().contains("[video]")) {
             String videoName = "Video_Tugas_Trailer_Film.mp4";
-            if (teks.contains("[") && teks.contains("]")) {
-                int start = teks.indexOf("[");
-                int end = teks.indexOf("]");
+            if (item.teks.contains("[") && item.teks.contains("]")) {
+                int start = item.teks.indexOf("[");
+                int end = item.teks.indexOf("]");
                 if (end > start) {
-                    videoName = teks.substring(start + 1, end);
+                    videoName = item.teks.substring(start + 1, end);
                 }
             }
             final String finalVideoName = videoName;
@@ -312,53 +490,149 @@ public class SimulasiPesanController {
 
             videoCard.getChildren().addAll(videoScreen, titleLbl, watchBtn);
             bubble.getChildren().add(videoCard);
-        } else if (teks.contains("http://") || teks.contains("https://") || teks.contains("s.id")) {
+        } else if (item.teks.contains("http://") || item.teks.contains("https://") || item.teks.contains("s.id")) {
             HBox linkBox = new HBox(8);
             linkBox.setAlignment(Pos.CENTER_LEFT);
             linkBox.getStyleClass().add("attachment-preview-box");
             Label linkIcon = new Label("🔗");
             linkIcon.setStyle("-fx-font-size: 16px;");
             VBox linkDetails = new VBox(2);
-            Label linkName = new Label("Tautan Terdeteksi (Periksa Keaslian Domain!)");
+            Label linkName = new Label("Tautan Terdeteksi (Cek Keaslian Domain!)");
             linkName.setStyle("-fx-font-weight: bold; -fx-text-fill: #b45309; -fx-font-size: 11px;");
-            Label linkWarning = new Label("Waspada tautan pendek (shortlink) atau situs kloningan.");
+            Label linkWarning = new Label("Waspada tautan pendek atau situs phishing kloningan.");
             linkWarning.setStyle("-fx-font-size: 10px; -fx-text-fill: #64748b;");
             linkDetails.getChildren().addAll(linkName, linkWarning);
             linkBox.getChildren().addAll(linkIcon, linkDetails);
             bubble.getChildren().add(linkBox);
         }
 
-        // Waktu pesan
-        HBox timeRow = new HBox();
-        timeRow.setAlignment(Pos.BOTTOM_RIGHT);
-        Label timeLbl = new Label(LocalTime.now().format(timeFormatter));
+        // Baris footer bubble (waktu & reaksi)
+        HBox bottomRow = new HBox(6);
+        bottomRow.setAlignment(Pos.BOTTOM_RIGHT);
+
+        if (currentPlatform == PlatformTheme.INSTAGRAM) {
+            Label reactionLbl = new Label("❤️ 1");
+            reactionLbl.getStyleClass().add("instagram-reaction-badge");
+            bottomRow.getChildren().add(reactionLbl);
+            Region sp = new Region();
+            HBox.setHgrow(sp, Priority.ALWAYS);
+            bottomRow.getChildren().add(sp);
+        }
+
+        Label timeLbl = new Label(item.waktu.format(timeFormatter));
         timeLbl.getStyleClass().add("bubble-time");
-        timeRow.getChildren().add(timeLbl);
-        bubble.getChildren().add(timeRow);
+        bottomRow.getChildren().add(timeLbl);
+        bubble.getChildren().add(bottomRow);
 
         HBox wrapper = new HBox(bubble);
         wrapper.setAlignment(Pos.CENTER_LEFT);
         chatBox.getChildren().add(wrapper);
     }
 
-    private void tambahBubbleKeluar(String teks) {
+    private void renderBubbleKeluarTheme(ChatMessageItem item) {
         VBox bubble = new VBox(4);
-        bubble.getStyleClass().add("bubble-outgoing");
 
-        Label textLbl = new Label(teks);
-        textLbl.setStyle("-fx-text-fill: #064e3b; -fx-font-size: 13px;");
+        String bubbleClass = "bubble-outgoing";
+        String textFill = "#064e3b";
+
+        if (currentPlatform == PlatformTheme.INSTAGRAM) {
+            bubbleClass = "bubble-instagram-out";
+            textFill = "#ffffff";
+        } else if (currentPlatform == PlatformTheme.MESSENGER) {
+            bubbleClass = "bubble-messenger-out";
+            textFill = "#ffffff";
+        } else if (currentPlatform == PlatformTheme.TIKTOK) {
+            bubbleClass = "bubble-tiktok-out";
+            textFill = "#ffffff";
+        }
+        bubble.getStyleClass().add(bubbleClass);
+
+        Label textLbl = new Label(item.teks);
+        textLbl.setStyle("-fx-text-fill: " + textFill + "; -fx-font-size: 13px;");
         textLbl.setWrapText(true);
         bubble.getChildren().add(textLbl);
 
-        // Waktu & Tanda centang terbaca (WhatsApp double tick)
         HBox timeRow = new HBox(4);
         timeRow.setAlignment(Pos.BOTTOM_RIGHT);
-        Label timeLbl = new Label(LocalTime.now().format(timeFormatter));
-        timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #65a30d;");
-        Label checkLbl = new Label("✓✓");
-        checkLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #0284c7; -fx-font-weight: bold;");
-        timeRow.getChildren().addAll(timeLbl, checkLbl);
+        Label timeLbl = new Label(item.waktu.format(timeFormatter));
+
+        if (currentPlatform == PlatformTheme.WHATSAPP) {
+            timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #65a30d;");
+            Label checkLbl = new Label("✓✓");
+            checkLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #0284c7; -fx-font-weight: bold;");
+            timeRow.getChildren().addAll(timeLbl, checkLbl);
+        } else if (currentPlatform == PlatformTheme.INSTAGRAM) {
+            timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);");
+            Label igRead = new Label("Terkirim");
+            igRead.setStyle("-fx-font-size: 9px; -fx-text-fill: rgba(255,255,255,0.7);");
+            timeRow.getChildren().addAll(timeLbl, igRead);
+        } else if (currentPlatform == PlatformTheme.MESSENGER) {
+            timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);");
+            Label msCheck = new Label("✓ Dibaca");
+            msCheck.setStyle("-fx-font-size: 9px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold;");
+            timeRow.getChildren().addAll(timeLbl, msCheck);
+        } else {
+            timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);");
+            timeRow.getChildren().add(timeLbl);
+        }
+
         bubble.getChildren().add(timeRow);
+
+        HBox wrapper = new HBox(bubble);
+        wrapper.setAlignment(Pos.CENTER_RIGHT);
+        chatBox.getChildren().add(wrapper);
+    }
+
+    private void renderBubbleVideoKeluar(ChatMessageItem item) {
+        VBox bubble = new VBox(6);
+        String bubbleClass = currentPlatform == PlatformTheme.INSTAGRAM ? "bubble-instagram-out" :
+                (currentPlatform == PlatformTheme.MESSENGER ? "bubble-messenger-out" :
+                        (currentPlatform == PlatformTheme.TIKTOK ? "bubble-tiktok-out" : "bubble-outgoing"));
+        bubble.getStyleClass().add(bubbleClass);
+
+        VBox videoCard = new VBox(6);
+        videoCard.getStyleClass().add("video-preview-card");
+
+        StackPane videoScreen = new StackPane();
+        videoScreen.getStyleClass().add("video-screen-mock");
+
+        StackPane playBtn = new StackPane();
+        playBtn.getStyleClass().add("video-play-circle");
+        Label playIcon = new Label("▶");
+        playIcon.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 0 0 0 3px;");
+        playBtn.getChildren().add(playIcon);
+
+        Label durationBadge = new Label(item.videoDurasi);
+        durationBadge.getStyleClass().add("video-tag-duration");
+        StackPane.setAlignment(durationBadge, Pos.BOTTOM_RIGHT);
+        StackPane.setMargin(durationBadge, new Insets(0, 8, 8, 0));
+
+        videoScreen.getChildren().addAll(playBtn, durationBadge);
+
+        Label titleLbl = new Label("📹 " + item.videoJudul);
+        titleLbl.getStyleClass().add("video-file-info");
+
+        Button watchBtn = new Button("▶ Putar Video Terkirim");
+        watchBtn.setMaxWidth(Double.MAX_VALUE);
+        watchBtn.getStyleClass().add("btn-watch-video");
+        watchBtn.setOnAction(e -> bukaDialogPemutarVideo(item.videoJudul, item.videoDurasi,
+                "Ini adalah video yang Anda kirimkan ke penipu. Perhatikan bahwa data/rekaman yang sudah terkirim ke platform chat tidak dapat ditarik kembali!"));
+        videoScreen.setOnMouseClicked(e -> watchBtn.fire());
+
+        videoCard.getChildren().addAll(videoScreen, titleLbl, watchBtn);
+
+        Label captionLbl = new Label(item.videoCaption);
+        String textFill = currentPlatform == PlatformTheme.WHATSAPP ? "#064e3b" : "#ffffff";
+        captionLbl.setStyle("-fx-text-fill: " + textFill + "; -fx-font-size: 13px;");
+        captionLbl.setWrapText(true);
+
+        HBox timeRow = new HBox(4);
+        timeRow.setAlignment(Pos.BOTTOM_RIGHT);
+        Label timeLbl = new Label(item.waktu.format(timeFormatter));
+        timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);");
+        timeRow.getChildren().add(timeLbl);
+
+        bubble.getChildren().addAll(videoCard, captionLbl, timeRow);
 
         HBox wrapper = new HBox(bubble);
         wrapper.setAlignment(Pos.CENTER_RIGHT);
@@ -380,7 +654,7 @@ public class SimulasiPesanController {
                 "📹 Rekaman Bukti Layar (Telah Menyukai Video) [0:30]",
                 "📹 Video Selfie Wajah & Memegang KTP Asli [0:15] (Sangat Berisiko!)");
         dialog.setTitle("Kirim Lampiran Video");
-        dialog.setHeaderText("Simulasi Pengiriman Video ke Obrolan");
+        dialog.setHeaderText("Simulasi Pengiriman Video ke Obrolan " + currentPlatform.getLabel());
         dialog.setContentText("Pilih jenis video yang ingin Anda kirimkan:");
 
         Optional<String> result = dialog.showAndWait();
@@ -412,57 +686,9 @@ public class SimulasiPesanController {
     }
 
     private void tambahBubbleVideoKeluar(String judulVideo, String durasi, String caption) {
-        VBox bubble = new VBox(6);
-        bubble.getStyleClass().add("bubble-outgoing");
-
-        VBox videoCard = new VBox(6);
-        videoCard.getStyleClass().add("video-preview-card");
-
-        StackPane videoScreen = new StackPane();
-        videoScreen.getStyleClass().add("video-screen-mock");
-
-        StackPane playBtn = new StackPane();
-        playBtn.getStyleClass().add("video-play-circle");
-        Label playIcon = new Label("▶");
-        playIcon.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-padding: 0 0 0 3px;");
-        playBtn.getChildren().add(playIcon);
-
-        Label durationBadge = new Label(durasi);
-        durationBadge.getStyleClass().add("video-tag-duration");
-        StackPane.setAlignment(durationBadge, Pos.BOTTOM_RIGHT);
-        StackPane.setMargin(durationBadge, new Insets(0, 8, 8, 0));
-
-        videoScreen.getChildren().addAll(playBtn, durationBadge);
-
-        Label titleLbl = new Label("📹 " + judulVideo);
-        titleLbl.getStyleClass().add("video-file-info");
-
-        Button watchBtn = new Button("▶ Putar Video Terkirim");
-        watchBtn.setMaxWidth(Double.MAX_VALUE);
-        watchBtn.getStyleClass().add("btn-watch-video");
-        watchBtn.setOnAction(e -> bukaDialogPemutarVideo(judulVideo, durasi,
-                "Ini adalah video yang Anda kirimkan ke penipu. Perhatikan bahwa data/rekaman yang sudah terkirim ke platform chat tidak dapat ditarik kembali!"));
-        videoScreen.setOnMouseClicked(e -> watchBtn.fire());
-
-        videoCard.getChildren().addAll(videoScreen, titleLbl, watchBtn);
-
-        Label captionLbl = new Label(caption);
-        captionLbl.setStyle("-fx-text-fill: #064e3b; -fx-font-size: 13px;");
-        captionLbl.setWrapText(true);
-
-        HBox timeRow = new HBox(4);
-        timeRow.setAlignment(Pos.BOTTOM_RIGHT);
-        Label timeLbl = new Label(LocalTime.now().format(timeFormatter));
-        timeLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #65a30d;");
-        Label checkLbl = new Label("✓✓");
-        checkLbl.setStyle("-fx-font-size: 10px; -fx-text-fill: #0284c7; -fx-font-weight: bold;");
-        timeRow.getChildren().addAll(timeLbl, checkLbl);
-
-        bubble.getChildren().addAll(videoCard, captionLbl, timeRow);
-
-        HBox wrapper = new HBox(bubble);
-        wrapper.setAlignment(Pos.CENTER_RIGHT);
-        chatBox.getChildren().add(wrapper);
+        ChatMessageItem item = new ChatMessageItem(judulVideo, durasi, caption, LocalTime.now());
+        daftarPesan.add(item);
+        renderBubbleVideoKeluar(item);
     }
 
     private void bukaDialogPemutarVideo(String judulVideo, String durasi, String konteksEdukasi) {
@@ -582,6 +808,7 @@ public class SimulasiPesanController {
     @FXML
     public void handleReset() {
         activeSimulasi = null;
+        daftarPesan.clear();
         chatBox.getChildren().clear();
         choiceButtonsBox.getChildren().clear();
         feedbackBox.setVisible(false);

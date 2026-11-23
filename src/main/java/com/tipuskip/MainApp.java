@@ -1,6 +1,7 @@
 package com.tipuskip;
 
 import com.tipuskip.controller.MainController;
+import com.tipuskip.util.WindowResizeHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +32,9 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            // Inisialisasi Custom Integrated Title Bar (Undecorated Stage tanpa bingkai OS)
+            primaryStage.initStyle(StageStyle.UNDECORATED);
+
             URL fxmlUrl = getClass().getResource("/com/tipuskip/view/main.fxml");
             if (fxmlUrl == null) {
                 throw new IllegalStateException("FXML main.fxml tidak ditemukan di /com/tipuskip/view/main.fxml");
@@ -40,6 +45,14 @@ public class MainApp extends Application {
             MainController controller = loader.getController();
 
             Scene scene = new Scene(root, 1100, 750);
+
+            // Hubungkan Title Bar Kustom dengan Stage
+            if (controller != null) {
+                controller.setupCustomTitleBar(primaryStage);
+            }
+
+            // Aktifkan resize helper pada window border
+            WindowResizeHelper.attach(primaryStage, scene);
 
             // 1. Pasang ikon aplikasi (multi-resolusi untuk taskbar dan window title bar OS)
             String[] iconSizes = {"16", "32", "64", "128", "256"};
@@ -84,7 +97,7 @@ public class MainApp extends Application {
         }
     }
 
-    private void mintaKonfirmasiKeluar(Stage stage) {
+    public static void mintaKonfirmasiKeluar(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Konfirmasi Keluar TipuSkip");
         alert.setHeaderText("Keluar dari Aplikasi TipuSkip?");

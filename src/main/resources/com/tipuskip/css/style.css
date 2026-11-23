@@ -8,6 +8,88 @@
 }
 
 /* =========================================================================
+   Custom Integrated Title Bar (Undecorated Window Header)
+   ========================================================================= */
+.app-root-pane {
+    -fx-background-color: #0b1120;
+    -fx-border-color: #334155;
+    -fx-border-width: 1px;
+}
+
+.integrated-header-container {
+    -fx-background-color: #0f172a;
+}
+
+.custom-title-bar {
+    -fx-background-color: #0b1120;
+    -fx-padding: 6px 14px 6px 16px;
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #1e293b;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.titlebar-brand {
+    -fx-text-fill: #38bdf8;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.titlebar-divider-dot {
+    -fx-text-fill: #475569;
+    -fx-font-size: 12px;
+}
+
+.titlebar-tagline {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+}
+
+.titlebar-security-pill {
+    -fx-background-color: rgba(56, 189, 248, 0.08);
+    -fx-border-color: rgba(56, 189, 248, 0.25);
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 3px 12px;
+}
+
+.titlebar-security-text {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7dd3fc;
+    -fx-font-weight: bold;
+}
+
+.window-controls-container {
+    -fx-spacing: 2px;
+    -fx-alignment: CENTER_RIGHT;
+    -fx-padding: 0 0 0 8px;
+}
+
+.win-ctrl-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 38px;
+    -fx-pref-height: 26px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-padding: 0;
+}
+
+.win-btn-minimize:hover,
+.win-btn-maximize:hover {
+    -fx-background-color: #334155;
+    -fx-text-fill: #f8fafc;
+}
+
+.win-btn-close:hover {
+    -fx-background-color: #e11d48;
+    -fx-text-fill: #ffffff;
+}
+
+/* =========================================================================
    Header & Navigation Bar
    ========================================================================= */
 .navbar {
@@ -127,17 +209,17 @@
 }
 
 /* =========================================================================
-   Chat Simulation UI (WhatsApp / Telegram Modern Theme)
+   Chat Simulation UI (Multi-Platform Theme Engine)
+   Supports: WhatsApp Business, Instagram DM, Facebook Messenger, TikTok
    ========================================================================= */
 .chat-window {
-    -fx-background-color: #efeae2; /* Authentic WhatsApp wallpaper tint */
     -fx-border-color: #cbd5e1;
     -fx-border-radius: 12px;
     -fx-background-radius: 12px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 12, 0, 0, 4);
 }
 
 .chat-header {
-    -fx-background-color: #075e54; /* WhatsApp classic dark green */
     -fx-padding: 12px 18px;
     -fx-background-radius: 12px 12px 0 0;
     -fx-border-radius: 12px 12px 0 0;
@@ -164,6 +246,67 @@
     -fx-alignment: CENTER;
 }
 
+/* 🟢 Platform 1: WhatsApp Business */
+.theme-whatsapp .chat-header {
+    -fx-background-color: #075e54;
+}
+.theme-whatsapp .chat-scroll-pane {
+    -fx-background-color: #efeae2;
+    -fx-background: #efeae2;
+}
+
+/* 📸 Platform 2: Instagram DM */
+.theme-instagram .chat-header {
+    -fx-background-color: #121212;
+    -fx-border-color: #27272a;
+    -fx-border-width: 0 0 1px 0;
+}
+.theme-instagram .chat-scroll-pane {
+    -fx-background-color: #09090b;
+    -fx-background: #09090b;
+}
+.theme-instagram .chat-header-title {
+    -fx-text-fill: #ffffff;
+}
+.theme-instagram .chat-header-status {
+    -fx-text-fill: #a1a1aa;
+}
+
+/* 💬 Platform 3: Facebook Messenger */
+.theme-messenger .chat-header {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e4e6eb;
+    -fx-border-width: 0 0 1px 0;
+}
+.theme-messenger .chat-scroll-pane {
+    -fx-background-color: #f0f2f5;
+    -fx-background: #f0f2f5;
+}
+.theme-messenger .chat-header-title {
+    -fx-text-fill: #050505;
+}
+.theme-messenger .chat-header-status {
+    -fx-text-fill: #65676b;
+}
+
+/* 🎵 Platform 4: TikTok Direct Chat */
+.theme-tiktok .chat-header {
+    -fx-background-color: #000000;
+    -fx-border-color: #27272a;
+    -fx-border-width: 0 0 1px 0;
+}
+.theme-tiktok .chat-scroll-pane {
+    -fx-background-color: #121212;
+    -fx-background: #121212;
+}
+.theme-tiktok .chat-header-title {
+    -fx-text-fill: #ffffff;
+}
+.theme-tiktok .chat-header-status {
+    -fx-text-fill: #25f4ee;
+}
+
+/* Chat Bubbles: WhatsApp (Default) */
 .bubble-incoming {
     -fx-background-color: #ffffff;
     -fx-background-radius: 12px 12px 12px 2px;
@@ -175,7 +318,7 @@
 }
 
 .bubble-outgoing {
-    -fx-background-color: #d9fdd3; /* WhatsApp user chat bubble */
+    -fx-background-color: #d9fdd3;
     -fx-background-radius: 12px 12px 2px 12px;
     -fx-padding: 10px 14px;
     -fx-border-color: #bbf7d0;
@@ -188,6 +331,139 @@
     -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-text-fill: #0284c7;
+}
+
+/* Chat Bubbles: Instagram DM */
+.bubble-instagram-in {
+    -fx-background-color: #27272a;
+    -fx-background-radius: 18px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+}
+.bubble-sender-instagram {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f43f5e;
+}
+.bubble-instagram-out {
+    -fx-background-color: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    -fx-background-radius: 18px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+    -fx-effect: dropshadow(three-pass-box, rgba(253, 29, 29, 0.35), 8, 0, 0, 2);
+}
+.instagram-reaction-badge {
+    -fx-background-color: #18181b;
+    -fx-background-radius: 12px;
+    -fx-padding: 2px 7px;
+    -fx-font-size: 10px;
+    -fx-text-fill: #f43f5e;
+    -fx-border-color: #3f3f46;
+    -fx-border-radius: 12px;
+}
+
+/* Chat Bubbles: Facebook Messenger */
+.bubble-messenger-in {
+    -fx-background-color: #e4e6eb;
+    -fx-background-radius: 18px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+}
+.bubble-sender-messenger {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0084ff;
+}
+.bubble-messenger-out {
+    -fx-background-color: linear-gradient(to right, #0084ff, #00c6ff);
+    -fx-background-radius: 18px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 132, 255, 0.35), 8, 0, 0, 2);
+}
+
+/* Chat Bubbles: TikTok Direct Chat */
+.bubble-tiktok-in {
+    -fx-background-color: #1f1f23;
+    -fx-border-color: #25f4ee;
+    -fx-border-width: 0 0 0 3px;
+    -fx-background-radius: 0 16px 16px 0;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+}
+.bubble-sender-tiktok {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #25f4ee;
+}
+.bubble-tiktok-out {
+    -fx-background-color: #fe2c55;
+    -fx-background-radius: 16px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 520px;
+    -fx-effect: dropshadow(three-pass-box, rgba(254, 44, 85, 0.4), 8, 0, 0, 2);
+}
+
+/* Platform Avatars & Badges */
+.avatar-whatsapp {
+    -fx-background-color: #25d366;
+    -fx-background-radius: 40px;
+}
+.avatar-instagram-ring {
+    -fx-background-color: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    -fx-background-radius: 40px;
+    -fx-padding: 2px;
+}
+.avatar-messenger {
+    -fx-background-color: #0084ff;
+    -fx-background-radius: 40px;
+}
+.avatar-tiktok {
+    -fx-background-color: #000000;
+    -fx-border-color: #fe2c55;
+    -fx-border-width: 2px;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 40px;
+}
+
+.badge-verified-social {
+    -fx-background-color: #38bdf8;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 50%;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 1px 5px;
+}
+
+.header-social-action-icon {
+    -fx-font-size: 15px;
+    -fx-text-fill: #94a3b8;
+    -fx-cursor: hand;
+    -fx-padding: 4px;
+}
+.header-social-action-icon:hover {
+    -fx-text-fill: #ffffff;
+}
+
+.chat-header-security-badge {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-text-fill: #93c5fd;
+    -fx-padding: 3px 8px;
+    -fx-background-radius: 6px;
+    -fx-font-size: 11px;
+}
+
+.platform-combobox {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 2px 6px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.platform-combobox:hover {
+    -fx-border-color: #2563eb;
 }
 
 .bubble-time {
@@ -219,7 +495,7 @@
 }
 
 /* =========================================================================
-   Phone Simulation UI (SmartPhone Dialer & Caller ID)
+   Phone Simulation UI (SmartPhone Dialer & Multi-Platform Calling Screen)
    ========================================================================= */
 .phone-container {
     -fx-background-color: #0f172a;
@@ -231,6 +507,22 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.35), 20, 0, 0, 8);
 }
 
+.phone-theme-gsm .phone-screen {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #020617);
+}
+.phone-theme-whatsapp .phone-screen {
+    -fx-background-color: linear-gradient(to bottom, #075e54, #042f2c);
+}
+.phone-theme-instagram .phone-screen {
+    -fx-background-color: linear-gradient(to bottom, #18181b, #09090b);
+}
+.phone-theme-messenger .phone-screen {
+    -fx-background-color: linear-gradient(to bottom, #0062e0, #002b66);
+}
+.phone-theme-tiktok .phone-screen {
+    -fx-background-color: linear-gradient(to bottom, #18181b, #000000);
+}
+
 .phone-status-bar {
     -fx-text-fill: #94a3b8;
     -fx-font-size: 11px;
@@ -238,7 +530,6 @@
 }
 
 .phone-screen {
-    -fx-background-color: #1e293b;
     -fx-background-radius: 20px;
     -fx-padding: 20px;
     -fx-alignment: CENTER;

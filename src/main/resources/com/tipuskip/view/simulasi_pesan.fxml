@@ -8,20 +8,29 @@
             fx:controller="com.tipuskip.controller.SimulasiPesanController"
             stylesheets="@../css/style.css">
 
-    <!-- Left Sidebar: Skenario Selector & Realtime Stats -->
+    <!-- Left Sidebar: Skenario Selector, Theme Switcher & Realtime Stats -->
     <left>
-        <VBox spacing="14" prefWidth="320" styleClass="card">
-            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+        <VBox spacing="12" prefWidth="320" styleClass="card">
+            <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
             <Label text="💬 Simulasi Pesan Interaktif" styleClass="card-title" />
-            <Label text="Pilih skenario percakapan penipuan digital untuk menguji ketangkasan Anda." styleClass="card-subtitle" wrapText="true" />
+            <Label text="Uji ketangkasan Anda menghadapi berbagai modus penipuan di media sosial populer." styleClass="card-subtitle" wrapText="true" />
 
             <Separator />
 
-            <Label text="Pilih Skenario:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1e293b;" />
-            <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Pesan --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+            <!-- Platform Switcher -->
+            <VBox spacing="6">
+                <Label text="🎨 Tampilan Media Sosial:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #1e293b;" />
+                <ComboBox fx:id="cbPlatformTheme" promptText="-- Ganti Tampilan Chat --" maxWidth="Infinity" styleClass="platform-combobox" />
+            </VBox>
+
+            <!-- Scenario Selection -->
+            <VBox spacing="6">
+                <Label text="Pilih Skenario Percakapan:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #1e293b;" />
+                <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Pesan --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+            </VBox>
 
             <!-- Scenario Metadata Box -->
-            <VBox fx:id="infoCard" spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
+            <VBox fx:id="infoCard" spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 10px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
                 <HBox spacing="8" alignment="CENTER_LEFT">
                     <Label fx:id="lblKategori" text="Kategori: -" styleClass="edu-tag" />
                     <Region HBox.hgrow="ALWAYS" />
@@ -57,28 +66,36 @@
         </VBox>
     </left>
 
-    <!-- Center: Authentic WhatsApp/Telegram-style Simulation -->
+    <!-- Center: Authentic WhatsApp/Instagram/Messenger/TikTok Simulation -->
     <center>
-        <VBox spacing="14" style="-fx-padding: 0 0 0 16;">
-            <!-- Chat Window Container -->
-            <VBox VBox.vgrow="ALWAYS" styleClass="chat-window">
+        <VBox spacing="12" style="-fx-padding: 0 0 0 16;">
+            <!-- Chat Window Container with Dynamic Platform Theme Classes -->
+            <VBox fx:id="chatWindow" VBox.vgrow="ALWAYS" styleClass="chat-window, theme-whatsapp">
                 <!-- Chat Window Top Header -->
-                <HBox alignment="CENTER_LEFT" spacing="12" styleClass="chat-header">
-                    <StackPane styleClass="chat-avatar-circle">
+                <HBox fx:id="chatHeaderBox" alignment="CENTER_LEFT" spacing="12" styleClass="chat-header">
+                    <StackPane fx:id="avatarContainer" styleClass="chat-avatar-circle">
                         <Label fx:id="lblAvatarText" text="👤" style="-fx-font-size: 18px; -fx-text-fill: #ffffff;" />
                     </StackPane>
                     <VBox spacing="2">
-                        <Label fx:id="lblChatHeaderName" text="Pilih Skenario untuk Memulai" styleClass="chat-header-title" />
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <Label fx:id="lblChatHeaderName" text="Pilih Skenario untuk Memulai" styleClass="chat-header-title" />
+                            <Label fx:id="lblVerifiedBadge" text="✓" visible="false" managed="false" styleClass="badge-verified-social" />
+                        </HBox>
                         <Label fx:id="lblChatHeaderStatus" text="Nomor Tidak Dikenal (+62-XXX) • Simulasi Aman" styleClass="chat-header-status" />
                     </VBox>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Label text="🔒 Enkripsi Simulasi Edukasi" style="-fx-text-fill: #a7f3d0; -fx-font-size: 11px;" />
+                    <!-- Right header tools (Call icon, Video call icon, Security badge) -->
+                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                        <Label fx:id="lblHeaderCallIcon" text="📞" styleClass="header-social-action-icon" />
+                        <Label fx:id="lblHeaderVideoIcon" text="📹" styleClass="header-social-action-icon" />
+                        <Label fx:id="lblHeaderSecurity" text="🔒 Simulasi Terenkripsi" styleClass="chat-header-security-badge" />
+                    </HBox>
                 </HBox>
 
                 <!-- Scrollable Chat Bubble Area -->
                 <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
-                            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 12px;">
-                    <VBox fx:id="chatBox" spacing="14" style="-fx-padding: 8px;">
+                            styleClass="chat-scroll-pane">
+                    <VBox fx:id="chatBox" spacing="14" style="-fx-padding: 12px 14px;">
                         <!-- Bubbles dynamically added -->
                     </VBox>
                 </ScrollPane>

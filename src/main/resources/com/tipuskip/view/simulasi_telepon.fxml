@@ -8,20 +8,29 @@
             fx:controller="com.tipuskip.controller.SimulasiTeleponController"
             stylesheets="@../css/style.css">
 
-    <!-- Left Sidebar: Skenario Selector & Realtime Stats -->
+    <!-- Left Sidebar: Skenario Selector, Theme Switcher & Realtime Stats -->
     <left>
-        <VBox spacing="14" prefWidth="320" styleClass="card">
-            <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+        <VBox spacing="12" prefWidth="320" styleClass="card">
+            <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
             <Label text="📞 Simulasi Telepon &amp; Dialer" styleClass="card-title" />
-            <Label text="Latih kewaspadaan menghadapi rekayasa sosial (vishing) melalui simulasi panggilan interaktif." styleClass="card-subtitle" wrapText="true" />
+            <Label text="Latih kewaspadaan menghadapi penipuan suara (vishing) di telepon seluler atau panggilan media sosial." styleClass="card-subtitle" wrapText="true" />
 
             <Separator />
 
-            <Label text="Pilih Skenario Panggilan:" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #1e293b;" />
-            <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Telepon --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+            <!-- Phone Platform Switcher -->
+            <VBox spacing="6">
+                <Label text="🎨 Tampilan Panggilan Platform:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #1e293b;" />
+                <ComboBox fx:id="cbPhonePlatform" promptText="-- Ganti Tampilan Panggilan --" maxWidth="Infinity" styleClass="platform-combobox" />
+            </VBox>
+
+            <!-- Scenario Selection -->
+            <VBox spacing="6">
+                <Label text="Pilih Skenario Panggilan:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #1e293b;" />
+                <ComboBox fx:id="cbSkenario" promptText="-- Pilih Skenario Telepon --" maxWidth="Infinity" style="-fx-cursor: hand;" />
+            </VBox>
 
             <!-- Scenario Details Box -->
-            <VBox spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 12px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
+            <VBox spacing="6" style="-fx-background-color: #f8fafc; -fx-padding: 10px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0; -fx-border-radius: 8px;">
                 <HBox spacing="8" alignment="CENTER_LEFT">
                     <Label fx:id="lblKategori" text="Kategori: -" styleClass="edu-tag" />
                     <Region HBox.hgrow="ALWAYS" />
@@ -63,17 +72,17 @@
             <!-- Smartphone Shell Container -->
             <HBox spacing="16" VBox.vgrow="ALWAYS">
                 <!-- Phone Display (Caller ID & Speech Dialogue) -->
-                <VBox spacing="12" HBox.hgrow="ALWAYS" styleClass="phone-container">
+                <VBox fx:id="phoneContainer" spacing="12" HBox.hgrow="ALWAYS" styleClass="phone-container, phone-theme-gsm">
                     <!-- Status Bar -->
                     <HBox alignment="CENTER_LEFT" spacing="8" styleClass="phone-status-bar">
-                        <Label text="09:41" style="-fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
+                        <Label fx:id="lblPhoneClock" text="09:41" style="-fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="📶 5G" style="-fx-text-fill: #94a3b8;" />
+                        <Label fx:id="lblPhoneNetwork" text="📶 5G • GSM" style="-fx-text-fill: #94a3b8;" />
                         <Label text="🔋 98%" style="-fx-text-fill: #94a3b8;" />
                     </HBox>
 
                     <!-- Caller ID Profile -->
-                    <VBox alignment="CENTER" spacing="8" styleClass="phone-screen" VBox.vgrow="ALWAYS">
+                    <VBox fx:id="phoneScreen" alignment="CENTER" spacing="8" styleClass="phone-screen" VBox.vgrow="ALWAYS">
                         <StackPane fx:id="avatarContainer" styleClass="phone-avatar">
                             <Label fx:id="lblAvatarIcon" text="📞" style="-fx-font-size: 36px; -fx-text-fill: #ffffff;" />
                         </StackPane>

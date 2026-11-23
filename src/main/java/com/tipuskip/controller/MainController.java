@@ -1,11 +1,13 @@
 package com.tipuskip.controller;
 
+import com.tipuskip.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -21,6 +23,11 @@ import java.net.URL;
 public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    @FXML private HBox customTitleBar;
+    @FXML private Button btnWinMinimize;
+    @FXML private Button btnWinMaximize;
+    @FXML private Button btnWinClose;
+
     @FXML private StackPane contentArea;
     @FXML private Button btnNavPesan;
     @FXML private Button btnNavTelepon;
@@ -28,6 +35,59 @@ public class MainController {
     @FXML private Button btnNavEdukasi;
     @FXML private Button btnNavRiwayat;
     @FXML private Button btnNavAdmin;
+
+    private Stage primaryStage;
+    private double xOffset = 0;
+    private double yOffset = 0;
+
+    public void setupCustomTitleBar(Stage stage) {
+        this.primaryStage = stage;
+
+        if (customTitleBar != null) {
+            customTitleBar.setOnMousePressed(event -> {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            });
+
+            customTitleBar.setOnMouseDragged(event -> {
+                if (!primaryStage.isMaximized()) {
+                    primaryStage.setX(event.getScreenX() - xOffset);
+                    primaryStage.setY(event.getScreenY() - yOffset);
+                }
+            });
+
+            customTitleBar.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    handleWindowMaximize();
+                }
+            });
+        }
+    }
+
+    @FXML
+    public void handleWindowMinimize() {
+        if (primaryStage != null) {
+            primaryStage.setIconified(true);
+        }
+    }
+
+    @FXML
+    public void handleWindowMaximize() {
+        if (primaryStage != null) {
+            boolean isMax = !primaryStage.isMaximized();
+            primaryStage.setMaximized(isMax);
+            if (btnWinMaximize != null) {
+                btnWinMaximize.setText(isMax ? "❐" : "▢");
+            }
+        }
+    }
+
+    @FXML
+    public void handleWindowClose() {
+        if (primaryStage != null) {
+            MainApp.mintaKonfirmasiKeluar(primaryStage);
+        }
+    }
 
     @FXML
     public void initialize() {
