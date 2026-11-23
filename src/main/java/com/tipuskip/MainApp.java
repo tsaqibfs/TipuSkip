@@ -5,6 +5,7 @@ import com.tipuskip.util.WindowResizeHelper;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.slf4j.Logger;
@@ -44,7 +46,23 @@ public class MainApp extends Application {
             Parent root = loader.load();
             MainController controller = loader.getController();
 
-            Scene scene = new Scene(root, 1100, 750);
+            // Deteksi ukuran layar visual pengguna (memperhitungkan taskbar & DPI scaling laptop)
+            Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
+            double screenWidth = visualBounds.getWidth();
+            double screenHeight = visualBounds.getHeight();
+
+            // Hitung ukuran jendela yang proporsional dan pas di layar tanpa kebesaran (default ~980x620)
+            double initialWidth = Math.min(990, Math.max(840, screenWidth * 0.80));
+            double initialHeight = Math.min(630, Math.max(500, screenHeight * 0.84));
+
+            if (initialHeight > screenHeight - 30) {
+                initialHeight = screenHeight - 40;
+            }
+            if (initialWidth > screenWidth - 30) {
+                initialWidth = screenWidth - 40;
+            }
+
+            Scene scene = new Scene(root, initialWidth, initialHeight);
 
             // Hubungkan Title Bar Kustom dengan Stage
             if (controller != null) {
@@ -87,8 +105,11 @@ public class MainApp extends Application {
 
             primaryStage.setTitle("TipuSkip - Edukasi Pencegahan Penipuan Digital (Desktop App)");
             primaryStage.setScene(scene);
-            primaryStage.setMinWidth(960);
-            primaryStage.setMinHeight(650);
+            primaryStage.setMinWidth(780);
+            primaryStage.setMinHeight(480);
+            primaryStage.setWidth(initialWidth);
+            primaryStage.setHeight(initialHeight);
+            primaryStage.centerOnScreen();
             primaryStage.show();
 
             logger.info("Aplikasi Desktop TipuSkip berhasil dijalankan.");

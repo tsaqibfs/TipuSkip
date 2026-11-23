@@ -10,8 +10,8 @@
 
     <!-- Left Sidebar: Skenario Selector, Theme Switcher & Realtime Stats -->
     <left>
-        <VBox spacing="12" prefWidth="320" styleClass="card">
-            <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+        <VBox spacing="9" prefWidth="285" styleClass="card">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
             <Label text="📞 Simulasi Telepon &amp; Dialer" styleClass="card-title" />
             <Label text="Latih kewaspadaan menghadapi penipuan suara (vishing) di telepon seluler atau panggilan media sosial." styleClass="card-subtitle" wrapText="true" />
 
@@ -68,11 +68,11 @@
 
     <!-- Center: SmartPhone Frame with Caller ID & Interactive Dialer -->
     <center>
-        <VBox spacing="14" alignment="TOP_CENTER" style="-fx-padding: 0 0 0 16;">
+        <VBox spacing="10" alignment="TOP_CENTER" style="-fx-padding: 0 0 0 10;">
             <!-- Smartphone Shell Container -->
-            <HBox spacing="16" VBox.vgrow="ALWAYS">
+            <HBox spacing="12" VBox.vgrow="ALWAYS">
                 <!-- Phone Display (Caller ID & Speech Dialogue) -->
-                <VBox fx:id="phoneContainer" spacing="12" HBox.hgrow="ALWAYS" styleClass="phone-container, phone-theme-gsm">
+                <VBox fx:id="phoneContainer" spacing="10" HBox.hgrow="ALWAYS" styleClass="phone-container, phone-theme-gsm">
                     <!-- Status Bar -->
                     <HBox alignment="CENTER_LEFT" spacing="8" styleClass="phone-status-bar">
                         <Label fx:id="lblPhoneClock" text="09:41" style="-fx-text-fill: #94a3b8; -fx-font-weight: bold;" />
@@ -131,7 +131,7 @@
                 </VBox>
 
                 <!-- Interactive Phone Keypad Dialer Panel -->
-                <VBox spacing="10" prefWidth="250" styleClass="dialer-box">
+                <VBox spacing="8" prefWidth="210" styleClass="dialer-box">
                     <HBox alignment="CENTER_LEFT">
                         <Label text="⌨️ Keypad Dialer" style="-fx-text-fill: #f8fafc; -fx-font-weight: bold; -fx-font-size: 13px;" />
                         <Region HBox.hgrow="ALWAYS" />

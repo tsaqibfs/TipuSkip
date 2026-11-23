@@ -10,10 +10,10 @@
 
     <!-- Left Sidebar: Skenario Selector, Theme Switcher & Realtime Stats -->
     <left>
-        <VBox spacing="12" prefWidth="320" styleClass="card">
-            <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+        <VBox spacing="9" prefWidth="285" styleClass="card">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
             <Label text="💬 Simulasi Pesan Interaktif" styleClass="card-title" />
-            <Label text="Uji ketangkasan Anda menghadapi berbagai modus penipuan di media sosial populer." styleClass="card-subtitle" wrapText="true" />
+            <Label text="Uji ketangkasan menghadapi berbagai modus penipuan di media sosial." styleClass="card-subtitle" wrapText="true" />
 
             <Separator />
 
@@ -68,15 +68,15 @@
 
     <!-- Center: Authentic WhatsApp/Instagram/Messenger/TikTok Simulation -->
     <center>
-        <VBox spacing="12" style="-fx-padding: 0 0 0 16;">
+        <VBox spacing="10" style="-fx-padding: 0 0 0 10;">
             <!-- Chat Window Container with Dynamic Platform Theme Classes -->
             <VBox fx:id="chatWindow" VBox.vgrow="ALWAYS" styleClass="chat-window, theme-whatsapp">
                 <!-- Chat Window Top Header -->
-                <HBox fx:id="chatHeaderBox" alignment="CENTER_LEFT" spacing="12" styleClass="chat-header">
+                <HBox fx:id="chatHeaderBox" alignment="CENTER_LEFT" spacing="10" styleClass="chat-header">
                     <StackPane fx:id="avatarContainer" styleClass="chat-avatar-circle">
-                        <Label fx:id="lblAvatarText" text="👤" style="-fx-font-size: 18px; -fx-text-fill: #ffffff;" />
+                        <Label fx:id="lblAvatarText" text="👤" style="-fx-font-size: 16px; -fx-text-fill: #ffffff;" />
                     </StackPane>
-                    <VBox spacing="2">
+                    <VBox spacing="1">
                         <HBox alignment="CENTER_LEFT" spacing="6">
                             <Label fx:id="lblChatHeaderName" text="Pilih Skenario untuk Memulai" styleClass="chat-header-title" />
                             <Label fx:id="lblVerifiedBadge" text="✓" visible="false" managed="false" styleClass="badge-verified-social" />
@@ -85,7 +85,7 @@
                     </VBox>
                     <Region HBox.hgrow="ALWAYS" />
                     <!-- Right header tools (Call icon, Video call icon, Security badge) -->
-                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                    <HBox alignment="CENTER_RIGHT" spacing="8">
                         <Label fx:id="lblHeaderCallIcon" text="📞" styleClass="header-social-action-icon" />
                         <Label fx:id="lblHeaderVideoIcon" text="📹" styleClass="header-social-action-icon" />
                         <Label fx:id="lblHeaderSecurity" text="🔒 Simulasi Terenkripsi" styleClass="chat-header-security-badge" />
@@ -95,30 +95,30 @@
                 <!-- Scrollable Chat Bubble Area -->
                 <ScrollPane fx:id="chatScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
                             styleClass="chat-scroll-pane">
-                    <VBox fx:id="chatBox" spacing="14" style="-fx-padding: 12px 14px;">
+                    <VBox fx:id="chatBox" spacing="10" style="-fx-padding: 8px 12px;">
                         <!-- Bubbles dynamically added -->
                     </VBox>
                 </ScrollPane>
             </VBox>
 
             <!-- Feedback & Consequences Banner -->
-            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="4"
-                  style="-fx-padding: 12px; -fx-background-radius: 8px; -fx-border-radius: 8px;">
-                <HBox alignment="CENTER_LEFT" spacing="8">
-                    <Label fx:id="lblFeedbackIcon" text="💡" style="-fx-font-size: 16px;" />
-                    <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <VBox fx:id="feedbackBox" visible="false" managed="false" spacing="3"
+                  style="-fx-padding: 8px 12px; -fx-background-radius: 8px; -fx-border-radius: 8px;">
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="lblFeedbackIcon" text="💡" style="-fx-font-size: 15px;" />
+                    <Label fx:id="lblFeedbackJudul" text="Umpan Balik Respons" style="-fx-font-weight: bold; -fx-font-size: 13px;" />
                 </HBox>
-                <Label fx:id="lblFeedbackDetail" text="Penjelasan konsekuensi atas pilihan Anda..." wrapText="true" />
+                <Label fx:id="lblFeedbackDetail" text="Penjelasan konsekuensi atas pilihan Anda..." wrapText="true" style="-fx-font-size: 12px;" />
             </VBox>
 
             <!-- User Response Choices Container -->
-            <VBox fx:id="responsesContainer" spacing="8" styleClass="card">
+            <VBox fx:id="responsesContainer" spacing="6" styleClass="card" style="-fx-padding: 10px 14px;">
                 <HBox alignment="CENTER_LEFT" spacing="8">
-                    <Label text="💬 Tentukan Balasan Respons Anda:" style="-fx-font-weight: bold; -fx-text-fill: #0f172a;" />
+                    <Label text="💬 Tentukan Balasan Respons Anda:" style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #0f172a;" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnKirimVideo" text="🎥 Kirim Bukti Video" onAction="#handleKirimVideoAction" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 4 10;" />
+                    <Button fx:id="btnKirimVideo" text="🎥 Kirim Bukti Video" onAction="#handleKirimVideoAction" styleClass="btn-secondary" style="-fx-font-size: 11px; -fx-padding: 3 8;" />
                 </HBox>
-                <VBox fx:id="choiceButtonsBox" spacing="8">
+                <VBox fx:id="choiceButtonsBox" spacing="6">
                     <!-- Dynamic choice buttons inserted here -->
                 </VBox>
             </VBox>
