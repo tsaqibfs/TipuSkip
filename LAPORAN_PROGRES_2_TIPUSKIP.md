@@ -50,13 +50,18 @@ Pada **Progres ke-2**, pengerjaan sistem secara menyeluruh telah mencapai **92% 
 
 ## 2. Rincian Hasil Implementasi Fitur Baru & Bukti Screenshot (Fokus Progres 2)
 
-### 2.1. Integrasi Basis Data MySQL & Penyimpanan Data Dinamis
+### 2.1. Integrasi Basis Data MySQL & Lingkungan Containerization
 Pada Progres ke-2, basis data MySQL telah terhubung penuh ke antarmuka aplikasi menggunakan arsitektur JDBC Singleton dan Generic DAO Pattern. Seluruh entitas (pengguna, skenario, langkah percakapan, pilihan balasan, riwayat evaluasi, dan indikator penipuan) telah tersimpan secara persisten di database.
 
-> 📷 **[TEMPATKAN SCREENSHOT DATABASE DI SINI]**
-> *(Sisipkan tangkapan layar antarmuka phpMyAdmin / MySQL Workbench / DBeaver yang menampilkan struktur relasi tabel database TipuSkip atau isi data dari tabel `skenario`, `langkah_skenario`, dan `hasil_simulasi`).*
-> 
-> **Gambar 2.1**: Struktur Skema Relasional dan Bukti Data Tabel Basis Data MySQL TipuSkip.
+Untuk menjamin portabilitas pengujian antar-anggota tim tanpa terkendala konfigurasi lokal, layanan database diisolasi menggunakan **Docker Desktop**:
+* `tipuskip_mysql`: Berjalan pada port `3306:3306` menggunakan image `mysql:8.0`.
+* `tipuskip_phpmyadmin`: Berjalan pada port `8085:80` untuk memfasilitasi visualisasi struktur skema relasional tabel.
+
+![Layanan Docker Desktop TipuSkip](docs/screenshots/docker-desktop-services.jpg)  
+**Gambar 2.1a**: Manajemen Layanan Container MySQL 8.0 & phpMyAdmin pada Docker Desktop (`tipuskip-main`).
+
+![Skema Database phpMyAdmin](docs/screenshots/phpmyadmin-database-schema.jpg)  
+**Gambar 2.1b**: Implementasi Skema Relasional Basis Data `tipuskip_db` pada phpMyAdmin (Daftar Tabel Terhubung & Data Tabel `indikator_penipuan`).
 
 ---
 
@@ -130,7 +135,19 @@ Simulasi panggilan telepon suara kini juga dilengkapi pemilih tema platform pang
 > 
 > **Gambar 2.5**: Tampilan Simulasi Panggilan Telepon Suara Multi-Platform dan Keypad Dialer Interaktif.
 
-### 2.6. Perluasan 8 Skenario Lengkap Berbasis Pohon Keputusan (*Decision Tree*)
+---
+
+### 2.6. Autentikasi Pengguna & Pengamanan Hak Akses Panel Admin (RBAC - FR-12 & FR-13)
+Pada Progres 1, panel administrasi skenario dapat diakses secara terbuka. Pada Progres ke-2, sistem telah mengimplementasikan mekanisme kontrol akses berbasis peran (*Role-Based Access Control / RBAC*) yang ketat:
+* Setiap upaya membuka menu **⚙️ Admin Panel** akan memicu dialog otentikasi modal (`Autentikasi Administrator`).
+* Hanya pengguna dengan peran `Role.ADMIN` yang memiliki izin untuk menambah, memperbarui, atau menghapus skenario percakapan dan pola regex indikator penipuan pada basis data.
+
+![Autentikasi Administrator](docs/screenshots/autentikasi-admin-dialog.jpg)  
+**Gambar 2.6**: Antarmuka Modal Autentikasi Administrator (*Access Control FR-12 & FR-13*).
+
+---
+
+### 2.7. Perluasan 8 Skenario Lengkap Berbasis Pohon Keputusan (*Decision Tree*)
 Tidak lagi hanya 1 skenario, sistem kini memuat 8 skenario komprehensif:
 * **Skenario Pesan (5 Kasus)**:
   1. *Pesan 1*: Tawaran Kerja Freelance Like Video YouTube (Tingkat: MUDAH).
