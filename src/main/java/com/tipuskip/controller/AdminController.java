@@ -4,6 +4,7 @@ import com.tipuskip.model.*;
 import com.tipuskip.service.IAdminService;
 import com.tipuskip.service.ServiceFactory;
 import com.tipuskip.util.AlertHelper;
+import com.tipuskip.util.SessionManager;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -336,6 +337,14 @@ public class AdminController {
         txtIndSaran.clear();
         if (lblFormIndikator != null) {
             lblFormIndikator.setText("Kelola Indikator (Tambah / Ubah)");
+        }
+    }
+
+    @FXML
+    public void handleLogoutAdmin() {
+        if (AlertHelper.showConfirmation("Konfirmasi Logout Admin", "Apakah Anda yakin ingin keluar dari sesi Administrator?")) {
+            SessionManager.setCurrentUser(new Pengguna(2, "budi", "budi@example.com", "", Role.PENGGUNA));
+            AlertHelper.showInfo("Logout Berhasil", "Sesi Administrator telah ditutup. Hak akses kembali menjadi Pengguna Biasa.");
         }
     }
 }

@@ -8,7 +8,10 @@
       fx:controller="com.tipuskip.controller.AdminController"
       spacing="16" stylesheets="@../css/style.css">
 
-    <Label text="⚙️ Admin Panel - Pengelolaan Skenario &amp; Indikator" styleClass="card-title" />
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Label text="⚙️ Admin Panel - Pengelolaan Skenario &amp; Indikator" styleClass="card-title" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+        <Button text="🚪 Logout Admin" onAction="#handleLogoutAdmin" styleClass="btn-danger" style="-fx-font-size: 12px; -fx-padding: 6 14;" />
+    </HBox>
 
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
