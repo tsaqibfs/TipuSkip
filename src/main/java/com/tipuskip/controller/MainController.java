@@ -1,12 +1,18 @@
 package com.tipuskip.controller;
 
 import com.tipuskip.MainApp;
+import com.tipuskip.dao.PenggunaDAO;
+import com.tipuskip.dao.impl.PenggunaDAOImpl;
+import com.tipuskip.model.Pengguna;
+import com.tipuskip.util.AlertHelper;
+import com.tipuskip.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Controller Utama untuk Navigasi Antarmuka TipuSkip.
@@ -122,7 +129,64 @@ public class MainController {
 
     @FXML
     public void handleNavAdmin() {
+        if (!SessionManager.isAdmin()) {
+            boolean terautentikasi = tampilkanDialogLoginAdmin();
+            if (!terautentikasi) {
+                return;
+            }
+        }
         loadView("/com/tipuskip/view/admin.fxml", btnNavAdmin);
+    }
+
+    private boolean tampilkanDialogLoginAdmin() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("🔐 Autentikasi Administrator");
+        dialog.setHeaderText("Akses Terbatas Administrator (FR-12 & FR-13)\nMasukkan kredensial admin (Username: admin | Password: admin / admin123):");
+
+        ButtonType btnLoginType = new ButtonType("Masuk", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnLoginType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(12);
+        grid.setPadding(new Insets(20, 20, 10, 10));
+
+        TextField txtUsername = new TextField("admin");
+        txtUsername.setPromptText("Username Admin");
+
+        PasswordField txtPassword = new PasswordField();
+        txtPassword.setPromptText("Password Admin");
+
+        grid.add(new Label("Username:"), 0, 0);
+        grid.add(txtUsername, 1, 0);
+        grid.add(new Label("Password:"), 0, 1);
+        grid.add(txtPassword, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == btnLoginType) {
+            String username = txtUsername.getText().trim();
+            String password = txtPassword.getText().trim();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                AlertHelper.showWarning("Peringatan", "Username dan password tidak boleh kosong!");
+                return false;
+            }
+
+            PenggunaDAO penggunaDAO = new PenggunaDAOImpl();
+            Optional<Pengguna> auth = penggunaDAO.authenticate(username, password);
+
+            if (auth.isPresent() && auth.get().isAdmin()) {
+                SessionManager.setCurrentUser(auth.get());
+                AlertHelper.showInfo("Akses Diterima", "Selamat datang kembali, Administrator " + auth.get().getUsername() + "!");
+                return true;
+            } else {
+                AlertHelper.showError("Akses Ditolak", "Username atau Password salah, atau akun ini tidak memiliki peran sebagai Administrator.");
+                return false;
+            }
+        }
+        return false;
     }
 
     @FXML
